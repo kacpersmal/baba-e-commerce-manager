@@ -1,10 +1,25 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import {
+  appConfig,
+  databaseConfig,
+  redisConfig,
+  AppConfigService,
+} from './shared/config';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [appConfig, databaseConfig, redisConfig],
+      envFilePath: '.env',
+      cache: true,
+    }),
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppConfigService],
+  exports: [AppConfigService],
 })
 export class AppModule {}
