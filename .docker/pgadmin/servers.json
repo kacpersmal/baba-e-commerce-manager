@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Baba Dev PostgreSQL",
+      "Group": "Development",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "baba_dev",
+      "Username": "local_dev",
+      "SSLMode": "prefer"
+    }
+  }
+}
