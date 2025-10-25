@@ -71,6 +71,70 @@ cd src/client-app
 npm run dev
 ```
 
+## 🔄 Auto-Generated API Client
+
+The client app features a **fully automated TypeScript API client** powered by a custom Vite plugin that intelligently manages OpenAPI schema generation.
+
+### How the Auto-Generation Works
+
+The custom `openapiGenerator` Vite plugin automatically:
+
+- **Checks backend health** before attempting generation
+- **Monitors schema freshness** (only regenerates if older than 60 minutes)
+- **Runs during development startup** when you start the client app
+- **Handles failures gracefully** with helpful error messages
+- **Skips generation** when backend is unavailable
+
+### Smart Auto-Generation Features
+
+✅ **Backend Health Check**: Verifies NestJS server is running before generation
+✅ **Intelligent Caching**: Skips regeneration if schema is recent
+✅ **Development Integration**: Runs automatically when starting `npm run dev`
+✅ **Error Handling**: Provides clear feedback when generation fails
+✅ **Graceful Degradation**: Works even when backend is temporarily unavailable
+
+### Manual Generation (if needed)
+
+The plugin handles everything automatically, but you can manually trigger generation:
+
+```powershell
+# Navigate to client app
+cd src/client-app
+
+# Manually generate TypeScript types
+npm run generate:api
+```
+
+### What Gets Auto-Generated
+
+The Vite plugin automatically creates:
+
+- **Type-safe TypeScript interfaces** for all API endpoints
+- **Request/response types** with full validation
+- **Auto-completion support** in your IDE
+- **Runtime type checking** for API responses
+
+### Usage in Components
+
+```typescript
+import { client } from "@/lib/api";
+
+// Type-safe API calls with auto-completion
+const data = await client.GET("/health");
+const response = await client.POST("/users", {
+  body: { name: "John", email: "john@example.com" },
+});
+```
+
+### When to Regenerate
+
+- After adding new API endpoints
+- After modifying existing endpoint schemas
+- When backend types change
+- Before committing frontend changes
+
+**Note**: Ensure the core service is running before generating the API client.
+
 ## 🌐 Service URLs
 
 ### Applications
