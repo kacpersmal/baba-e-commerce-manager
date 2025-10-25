@@ -1,22 +1,21 @@
-import { createFileRoute } from '@tanstack/react-router'import { createFileRoute } from '@tanstack/react-router'
-
+import { createFileRoute } from '@tanstack/react-router'
 import { useHealthCheck, useReadinessCheck } from '@/lib/api/hooks'
 
 export const Route = createFileRoute('/health')({
-
-export const Route = createFileRoute('/health')({  component: RouteComponent,
-
-  component: HealthPage,})
-
+  component: HealthPage,
 })
 
-function RouteComponent() {
-
-function HealthPage() {  return <div>Hello "/health"!</div>
-
-  const { data: health, isLoading: healthLoading, error: healthError } = useHealthCheck()}
-
-  const { data: readiness, isLoading: readinessLoading, error: readinessError } = useReadinessCheck()
+function HealthPage() {
+  const {
+    data: health,
+    isLoading: healthLoading,
+    error: healthError,
+  } = useHealthCheck()
+  const {
+    data: readiness,
+    isLoading: readinessLoading,
+    error: readinessError,
+  } = useReadinessCheck()
 
   return (
     <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
@@ -67,11 +66,16 @@ function HealthPage() {  return <div>Hello "/health"!</div>
             ✨ Type-Safe API Client
           </h3>
           <p className="text-blue-800">
-            This demo uses auto-generated TypeScript types from your NestJS OpenAPI schema.
-            All API calls are fully type-checked at compile time!
+            This demo uses auto-generated TypeScript types from your NestJS
+            OpenAPI schema. All API calls are fully type-checked at compile
+            time!
           </p>
           <p className="text-blue-700 mt-2 text-sm">
-            Run <code className="bg-blue-100 px-2 py-1 rounded">npm run generate:api</code> to regenerate types after backend changes.
+            Run{' '}
+            <code className="bg-blue-100 px-2 py-1 rounded">
+              npm run generate:api
+            </code>{' '}
+            to regenerate types after backend changes.
           </p>
         </div>
       </div>
