@@ -1,0 +1,71 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: baba-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: baba_dev
+      POSTGRES_USER: local_dev
+      POSTGRES_PASSWORD: local_dev
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - baba-dev-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: baba-redis-dev
+    restart: unless-stopped
+    command: redis-server --requirepass local_dev
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - baba-dev-network
+
+  # Optional: Redis Commander for Redis GUI
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: baba-redis-commander-dev
+    restart: unless-stopped
+    environment:
+      REDIS_HOSTS: redis:baba-redis-dev:6379:0:local_dev
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - baba-dev-network
+
+  # Optional: pgAdmin for PostgreSQL GUI
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: baba-pgadmin-dev
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@baba.local
+      PGADMIN_DEFAULT_PASSWORD: local_dev
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    networks:
+      - baba-dev-network
+
+volumes:
+  postgres_data:
+    name: baba-postgres-data-dev
+  redis_data:
+    name: baba-redis-data-dev
+
+networks:
+  baba-dev-network:
+    name: baba-dev-network
+    driver: bridge
