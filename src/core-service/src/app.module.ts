@@ -8,6 +8,7 @@ import {
   redisConfig,
   AppConfigService,
 } from './shared/config';
+import { PrismaModule } from './shared/prisma';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import {
       envFilePath: '.env',
       cache: true,
     }),
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfigService],
