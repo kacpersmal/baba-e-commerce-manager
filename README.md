@@ -1,5 +1,8 @@
 # Baba E-Commerce Manager
 
+[![Build Client App](https://github.com/kacpersmal/baba-e-commerce-manager/actions/workflows/build-client.yml/badge.svg)](https://github.com/kacpersmal/baba-e-commerce-manager/actions/workflows/build-client.yml)
+[![Build Core Service](https://github.com/kacpersmal/baba-e-commerce-manager/actions/workflows/build-core.yml/badge.svg)](https://github.com/kacpersmal/baba-e-commerce-manager/actions/workflows/build-core.yml)
+
 A modern e-commerce management platform built with React (Frontend) and NestJS (Backend).
 
 ## 🚀 Quick Start
