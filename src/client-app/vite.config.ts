@@ -4,10 +4,14 @@ import tailwindcss from '@tailwindcss/vite'
 
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { fileURLToPath, URL } from 'node:url'
+import { openapiGenerator } from './src/lib/api/vite-plugin-openapi'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    openapiGenerator({
+      skipIfExists: false,
+    }),
     tanstackRouter({
       target: 'react',
       autoCodeSplitting: true,
