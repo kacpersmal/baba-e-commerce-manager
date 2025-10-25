@@ -11,6 +11,7 @@ export default defineConfig({
   plugins: [
     openapiGenerator({
       skipIfExists: false,
+      backendUrl: 'http://localhost:8000',
     }),
     tanstackRouter({
       target: 'react',
