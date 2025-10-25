@@ -1,0 +1,46 @@
+name: Build Core Service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/core-service/**"
+      - ".github/workflows/build-core.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/core-service/**"
+      - ".github/workflows/build-core.yml"
+
+jobs:
+  build-core:
+    name: Build Core Service
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./src/core-service
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.20.x"
+          cache: "npm"
+          cache-dependency-path: "./src/core-service/package-lock.json"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-build
+          path: ./src/core-service/dist/
+          retention-days: 7
