@@ -12,7 +12,7 @@ import { Package, Activity, ArrowRight } from 'lucide-react'
 
 export function HomePage() {
   return (
-    <div className="container max-w-6xl py-12">
+    <div className="container mx-auto max-w-6xl px-4 py-12">
       <div className="flex flex-col items-center space-y-8 text-center">
         <div className="space-y-4">
           <div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-3">

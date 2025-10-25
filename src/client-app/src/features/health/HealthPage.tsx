@@ -36,7 +36,7 @@ export function HealthPage() {
   }
 
   return (
-    <div className="container max-w-4xl py-8 space-y-8">
+    <div className="container mx-auto max-w-4xl px-4 py-8 space-y-8">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight">System Health</h1>
         <p className="text-muted-foreground">
