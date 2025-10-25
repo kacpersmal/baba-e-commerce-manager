@@ -1,24 +1,43 @@
 import { Link } from '@tanstack/react-router'
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu'
+import { Package } from 'lucide-react'
 
 export function Header() {
   return (
-    <header className="border-b">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 max-w-screen-2xl items-center">
         <Link
           to="/"
-          className="text-xl font-semibold hover:text-gray-600 transition-colors"
+          className="mr-6 flex items-center space-x-2 transition-opacity hover:opacity-80"
         >
-          Baba E-Commerce Manager
+          <Package className="h-6 w-6" />
+          <span className="font-bold">Baba E-Commerce Manager</span>
         </Link>
-        <nav className="flex gap-4">
-          <Link
-            to="/health"
-            className="text-gray-600 hover:text-gray-900 transition-colors"
-            activeProps={{ className: 'text-blue-600 font-semibold' }}
-          >
-            Health
-          </Link>
-        </nav>
+
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <Link to="/" className="[&.active]:font-semibold">
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Home
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link to="/health" className="[&.active]:font-semibold">
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Health
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
       </div>
     </header>
   )

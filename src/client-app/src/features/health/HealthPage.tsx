@@ -1,4 +1,16 @@
 import { useHealthCheck, useReadinessCheck } from './hooks'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Separator } from '@/components/ui/separator'
+import { Activity, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react'
 
 export function HealthPage() {
   const {
@@ -12,68 +24,130 @@ export function HealthPage() {
     error: readinessError,
   } = useReadinessCheck()
 
+  const getStatusBadge = (
+    isLoading: boolean,
+    error: unknown,
+    data: unknown,
+  ) => {
+    if (isLoading) return <Badge variant="outline">Loading...</Badge>
+    if (error) return <Badge variant="destructive">Error</Badge>
+    if (data) return <Badge variant="default">Healthy</Badge>
+    return null
+  }
+
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">
-          Auto-Generated API Client Demo
-        </h1>
+    <div className="container max-w-4xl py-8 space-y-8">
+      <div className="space-y-2">
+        <h1 className="text-4xl font-bold tracking-tight">System Health</h1>
+        <p className="text-muted-foreground">
+          Monitor your application's health and readiness status
+        </p>
+      </div>
 
-        {/* Health Check Card */}
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-            Health Check
-          </h2>
-          {healthLoading && (
-            <p className="text-gray-600">Loading health status...</p>
-          )}
-          {healthError && (
-            <p className="text-red-600">Error: {healthError.message}</p>
-          )}
-          {health && (
-            <pre className="bg-gray-50 p-4 rounded overflow-auto text-sm">
-              {JSON.stringify(health, null, 2)}
-            </pre>
-          )}
-        </div>
+      <Separator />
 
-        {/* Readiness Check Card */}
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-            Readiness Check
-          </h2>
-          {readinessLoading && (
-            <p className="text-gray-600">Loading readiness status...</p>
-          )}
-          {readinessError && (
-            <p className="text-red-600">Error: {readinessError.message}</p>
-          )}
-          {readiness && (
-            <pre className="bg-gray-50 p-4 rounded overflow-auto text-sm">
-              {JSON.stringify(readiness, null, 2)}
-            </pre>
-          )}
-        </div>
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Activity className="h-5 w-5" />
+                <CardTitle>Health Check</CardTitle>
+              </div>
+              {getStatusBadge(healthLoading, healthError, health)}
+            </div>
+            <CardDescription>General application health status</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {healthLoading && (
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+              </div>
+            )}
+            {healthError && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{String(healthError)}</AlertDescription>
+              </Alert>
+            )}
+            {health && (
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2 text-sm">
+                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                  <span className="font-medium">System operational</span>
+                </div>
+                <pre className="rounded-md bg-muted p-4 text-xs overflow-auto">
+                  {JSON.stringify(health, null, 2)}
+                </pre>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-        {/* Info Card */}
-        <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded">
-          <h3 className="font-semibold text-blue-900 mb-2">
-            ✨ Type-Safe API Client
-          </h3>
-          <p className="text-blue-800">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Activity className="h-5 w-5" />
+                <CardTitle>Readiness Check</CardTitle>
+              </div>
+              {getStatusBadge(readinessLoading, readinessError, readiness)}
+            </div>
+            <CardDescription>Application readiness for traffic</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {readinessLoading && (
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+              </div>
+            )}
+            {readinessError && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{String(readinessError)}</AlertDescription>
+              </Alert>
+            )}
+            {readiness && (
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2 text-sm">
+                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                  <span className="font-medium">Ready for requests</span>
+                </div>
+                <pre className="rounded-md bg-muted p-4 text-xs overflow-auto">
+                  {JSON.stringify(readiness, null, 2)}
+                </pre>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <div className="flex items-center space-x-2">
+            <Sparkles className="h-5 w-5" />
+            <CardTitle>Type-Safe API Client</CardTitle>
+          </div>
+          <CardDescription>Auto-generated from OpenAPI schema</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <p className="text-sm text-muted-foreground">
             This demo uses auto-generated TypeScript types from your NestJS
             OpenAPI schema. All API calls are fully type-checked at compile
             time!
           </p>
-          <p className="text-blue-700 mt-2 text-sm">
-            Run{' '}
-            <code className="bg-blue-100 px-2 py-1 rounded">
-              npm run generate:api
-            </code>{' '}
-            to regenerate types after backend changes.
+          <div className="rounded-md bg-muted p-3 text-sm font-mono">
+            npm run generate:api
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Run this command to regenerate types after backend changes.
           </p>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
