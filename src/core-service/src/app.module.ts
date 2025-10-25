@@ -9,6 +9,7 @@ import {
   AppConfigService,
 } from './shared/config';
 import { PrismaModule } from './shared/prisma';
+import { RedisModule } from './shared/redis';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { PrismaModule } from './shared/prisma';
       cache: true,
     }),
     PrismaModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfigService],
