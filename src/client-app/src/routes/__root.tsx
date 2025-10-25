@@ -1,6 +1,10 @@
-import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
+import {
+  HeadContent,
+  Outlet,
+  createRootRouteWithContext,
+} from '@tanstack/react-router'
 
-import Header from '../components/Header'
+import { Header } from '@/features/shared/layout'
 
 import type { QueryClient } from '@tanstack/react-query'
 
@@ -9,12 +13,19 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  component: () => (
-    <div className="min-h-screen bg-white">
-      <Header />
-      <main>
-        <Outlet />
-      </main>
-    </div>
-  ),
+  component: RootComponent,
 })
+
+function RootComponent() {
+  return (
+    <>
+      <HeadContent />
+      <div className="relative flex min-h-screen flex-col">
+        <Header />
+        <main className="flex-1">
+          <Outlet />
+        </main>
+      </div>
+    </>
+  )
+}
