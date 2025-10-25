@@ -20,6 +20,13 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@/*": ["src/*"],
+      "@shared/*": ["src/shared/*"],
+      "@config/*": ["src/shared/config/*"],
+      "@prisma/*": ["src/shared/prisma/*"],
+      "@redis/*": ["src/shared/redis/*"]
+    }
   }
 }
