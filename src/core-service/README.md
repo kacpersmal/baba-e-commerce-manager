@@ -9,6 +9,8 @@ npm install
 npm run start:dev
 ```
 
+Visit <http://localhost:8000/docs> for interactive API documentation (development only).
+
 ## Environment Variables
 
 Configure `.env` file with your database and Redis credentials.
@@ -70,6 +72,18 @@ const { port, isDevelopment } = this.config.app;
 const dbConfig = this.config.database;
 const redisConfig = this.config.redis;
 ```
+
+## API Documentation
+
+Interactive Swagger API documentation is available at <http://localhost:8000/docs> (development only).
+
+**Features:**
+
+- Interactive API testing
+- Request/response schemas
+- Try out endpoints directly
+- Organized by tags (health, cache, database)
+- Persistent authorization
 
 ## Path Aliases
 

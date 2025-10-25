@@ -4,3 +4,4 @@ import redisConfig from './redis.config';
 
 export { appConfig, databaseConfig, redisConfig };
 export { AppConfigService } from './config.service';
+export { AppConfigModule } from './config.module';

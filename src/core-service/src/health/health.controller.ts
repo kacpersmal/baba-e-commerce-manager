@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import {
   HealthCheck,
   HealthCheckService,
@@ -9,6 +10,7 @@ import { PrismaHealthIndicator } from './prisma.health';
 import { RedisHealthIndicator } from './redis.health';
 
 @Controller('health')
+@ApiTags('health')
 export class HealthController {
   constructor(
     private health: HealthCheckService,
@@ -20,6 +22,11 @@ export class HealthController {
 
   @Get()
   @HealthCheck()
+  @ApiOperation({ summary: 'Comprehensive health check' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns health status of all services',
+  })
   check() {
     return this.health.check([
       () => this.prismaHealth.isHealthy('database'),
@@ -36,12 +43,16 @@ export class HealthController {
 
   @Get('liveness')
   @HealthCheck()
+  @ApiOperation({ summary: 'Kubernetes liveness probe' })
+  @ApiResponse({ status: 200, description: 'Service is alive' })
   liveness() {
     return this.health.check([]);
   }
 
   @Get('readiness')
   @HealthCheck()
+  @ApiOperation({ summary: 'Kubernetes readiness probe' })
+  @ApiResponse({ status: 200, description: 'Service is ready' })
   readiness() {
     return this.health.check([
       () => this.prismaHealth.isHealthy('database'),

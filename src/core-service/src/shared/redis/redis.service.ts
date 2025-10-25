@@ -1,4 +1,9 @@
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import {
+  Injectable,
+  OnModuleInit,
+  OnModuleDestroy,
+  Logger,
+} from '@nestjs/common';
 import Redis from 'ioredis';
 import { AppConfigService } from '@shared/config';
 
@@ -7,6 +12,8 @@ export class RedisService
   extends Redis
   implements OnModuleInit, OnModuleDestroy
 {
+  private readonly logger = new Logger(RedisService.name);
+
   constructor(private readonly configService: AppConfigService) {
     const redisConfig = configService.redis;
 
@@ -26,19 +33,20 @@ export class RedisService
 
   async onModuleInit() {
     this.on('connect', () => {
-      console.log('Redis connected successfully');
+      this.logger.log('Redis connected successfully');
     });
 
     this.on('error', (error) => {
-      console.error('Redis connection error:', error);
+      this.logger.error('Redis connection error', error.stack);
     });
 
     this.on('ready', () => {
-      console.log('Redis is ready to accept commands');
+      this.logger.log('Redis is ready to accept commands');
     });
   }
 
   async onModuleDestroy() {
+    this.logger.log('Disconnecting from Redis');
     await this.quit();
   }
 }
