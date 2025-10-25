@@ -71,27 +71,48 @@ cd src/client-app
 npm run dev
 ```
 
-## 🔄 API Client Generation
+## 🔄 Auto-Generated API Client
 
-The client app uses auto-generated TypeScript types and API client from the backend's OpenAPI specification.
+The client app features a **fully automated TypeScript API client** powered by a custom Vite plugin that intelligently manages OpenAPI schema generation.
 
-### Generate API Client
+### How the Auto-Generation Works
 
-After starting the core service, generate the latest API client:
+The custom `openapiGenerator` Vite plugin automatically:
+
+- **Checks backend health** before attempting generation
+- **Monitors schema freshness** (only regenerates if older than 60 minutes)
+- **Runs during development startup** when you start the client app
+- **Handles failures gracefully** with helpful error messages
+- **Skips generation** when backend is unavailable
+
+### Smart Auto-Generation Features
+
+✅ **Backend Health Check**: Verifies NestJS server is running before generation
+✅ **Intelligent Caching**: Skips regeneration if schema is recent
+✅ **Development Integration**: Runs automatically when starting `npm run dev`
+✅ **Error Handling**: Provides clear feedback when generation fails
+✅ **Graceful Degradation**: Works even when backend is temporarily unavailable
+
+### Manual Generation (if needed)
+
+The plugin handles everything automatically, but you can manually trigger generation:
 
 ```powershell
 # Navigate to client app
 cd src/client-app
 
-# Generate TypeScript types from OpenAPI spec
+# Manually generate TypeScript types
 npm run generate:api
 ```
 
-This command:
+### What Gets Auto-Generated
 
-- Fetches the OpenAPI spec from `http://localhost:8000/docs-json`
-- Generates TypeScript types in `src/lib/api/schema.ts`
-- Provides type-safe API client with auto-completion
+The Vite plugin automatically creates:
+
+- **Type-safe TypeScript interfaces** for all API endpoints
+- **Request/response types** with full validation
+- **Auto-completion support** in your IDE
+- **Runtime type checking** for API responses
 
 ### Usage in Components
 
