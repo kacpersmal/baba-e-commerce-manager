@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   // Enable CORS only in development
   if (process.env.NODE_ENV === 'development') {
     app.enableCors({
@@ -11,7 +11,7 @@ async function bootstrap() {
       credentials: true,
     });
   }
-  
+
   await app.listen(process.env.PORT ?? 8000);
 }
 bootstrap();
