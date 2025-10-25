@@ -33,7 +33,7 @@ npx prisma studio
 ### Usage
 
 ```typescript
-import { PrismaService } from './shared/prisma';
+import { PrismaService } from '@shared/prisma';
 
 constructor(private readonly prisma: PrismaService) {}
 
@@ -49,7 +49,7 @@ await this.prisma.user.create({ data });
 ### Usage
 
 ```typescript
-import { RedisService } from './shared/redis';
+import { RedisService } from '@shared/redis';
 
 constructor(private readonly redis: RedisService) {}
 
@@ -62,11 +62,27 @@ await this.redis.setex('key', 3600, 'value'); // with TTL
 ## Configuration
 
 ```typescript
-import { AppConfigService } from './shared/config';
+import { AppConfigService } from '@shared/config';
 
 constructor(private readonly config: AppConfigService) {}
 
 const { port, isDevelopment } = this.config.app;
 const dbConfig = this.config.database;
 const redisConfig = this.config.redis;
+```
+
+## Path Aliases
+
+The project uses TypeScript path aliases for cleaner imports:
+
+```typescript
+// Instead of: import { PrismaService } from '../../shared/prisma';
+import { PrismaService } from '@shared/prisma';
+
+// Available aliases:
+// @/*          -> src/*
+// @shared/*    -> src/shared/*
+// @config/*    -> src/shared/config/*
+// @prisma/*    -> src/shared/prisma/*
+// @redis/*     -> src/shared/redis/*
 ```

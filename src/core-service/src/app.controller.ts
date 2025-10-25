@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AppService } from './app.service';
-import { AppConfigService } from './shared/config';
-import { PrismaService } from './shared/prisma';
-import { RedisService } from './shared/redis';
+import { AppConfigService } from '@shared/config';
+import { PrismaService } from '@shared/prisma';
+import { RedisService } from '@shared/redis';
 
 @Controller()
 export class AppController {

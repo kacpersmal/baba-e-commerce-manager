@@ -7,9 +7,9 @@ import {
   databaseConfig,
   redisConfig,
   AppConfigService,
-} from './shared/config';
-import { PrismaModule } from './shared/prisma';
-import { RedisModule } from './shared/redis';
+} from '@shared/config';
+import { PrismaModule } from '@shared/prisma';
+import { RedisModule } from '@shared/redis';
 
 @Module({
   imports: [
