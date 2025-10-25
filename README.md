@@ -71,6 +71,49 @@ cd src/client-app
 npm run dev
 ```
 
+## 🔄 API Client Generation
+
+The client app uses auto-generated TypeScript types and API client from the backend's OpenAPI specification.
+
+### Generate API Client
+
+After starting the core service, generate the latest API client:
+
+```powershell
+# Navigate to client app
+cd src/client-app
+
+# Generate TypeScript types from OpenAPI spec
+npm run generate:api
+```
+
+This command:
+
+- Fetches the OpenAPI spec from `http://localhost:8000/docs-json`
+- Generates TypeScript types in `src/lib/api/schema.ts`
+- Provides type-safe API client with auto-completion
+
+### Usage in Components
+
+```typescript
+import { client } from "@/lib/api";
+
+// Type-safe API calls with auto-completion
+const data = await client.GET("/health");
+const response = await client.POST("/users", {
+  body: { name: "John", email: "john@example.com" },
+});
+```
+
+### When to Regenerate
+
+- After adding new API endpoints
+- After modifying existing endpoint schemas
+- When backend types change
+- Before committing frontend changes
+
+**Note**: Ensure the core service is running before generating the API client.
+
 ## 🌐 Service URLs
 
 ### Applications
