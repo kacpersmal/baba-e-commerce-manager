@@ -28,10 +28,6 @@ async function bootstrap() {
       .setTitle('Core Service API')
       .setDescription('NestJS Core Service with PostgreSQL and Redis')
       .setVersion('1.0')
-      .addTag('health', 'Health check endpoints')
-      .addTag('cache', 'Redis cache operations')
-      .addTag('database', 'Database operations')
-      .addTag('general', 'General endpoints')
       .addBearerAuth()
       .addServer('http://localhost:8000', 'Development')
       .build();
