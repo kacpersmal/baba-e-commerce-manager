@@ -28,12 +28,14 @@ export class HealthController {
     description: 'Returns health status of all services',
   })
   check() {
+    const diskPath = process.platform === 'win32' ? 'C:\\' : '/';
+
     return this.health.check([
       () => this.prismaHealth.isHealthy('database'),
       () => this.redisHealth.isHealthy('redis'),
       () =>
         this.disk.checkStorage('disk', {
-          path: '/',
+          path: diskPath,
           thresholdPercent: 0.9,
         }),
       () => this.memory.checkHeap('memory_heap', 300 * 1024 * 1024),
