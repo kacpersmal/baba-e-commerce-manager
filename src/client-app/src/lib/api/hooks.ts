@@ -7,30 +7,6 @@ import {
 import { apiClient } from './client'
 import type { paths } from './schema'
 
-// Health check hook example
-export function useHealthCheck() {
-  return useQuery({
-    queryKey: ['health'],
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/health')
-      if (error) throw error
-      return data
-    },
-  })
-}
-
-// Readiness probe hook example
-export function useReadinessCheck() {
-  return useQuery({
-    queryKey: ['health', 'readiness'],
-    queryFn: async () => {
-      const { data, error } = await apiClient.GET('/health/readiness')
-      if (error) throw error
-      return data
-    },
-  })
-}
-
 // Generic query hook factory for type-safe API calls
 export function createQueryHook<TPath extends keyof paths>(
   path: TPath,
