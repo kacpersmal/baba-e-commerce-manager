@@ -10,6 +10,7 @@ import {
 } from '@shared/config';
 import { PrismaModule } from '@shared/prisma';
 import { RedisModule } from '@shared/redis';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { RedisModule } from '@shared/redis';
     }),
     PrismaModule,
     RedisModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfigService],
