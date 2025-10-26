@@ -32,7 +32,19 @@ export class OutboxService {
     });
   }
 
+  async markEventAsProcessed(eventId: string) {
+    this.logger.debug(`Marking outbox event ${eventId} as processed`);
+    return this.prismaService.outbox.update({
+      where: { id: eventId },
+      data: { processedAt: new Date() },
+    });
+  }
+
   async bulkMarkEventsAsProcessed(eventIds: string[]) {
+    if (eventIds.length === 0) {
+      this.logger.debug(`No outbox events to mark as processed`);
+      return;
+    }
     this.logger.debug(`Marking ${eventIds.length} outbox events as processed`);
 
     return this.prismaService.outbox.updateMany({
@@ -41,7 +53,19 @@ export class OutboxService {
     });
   }
 
+  async markEventAsFailed(eventId: string) {
+    this.logger.debug(`Marking outbox event ${eventId} as failed`);
+    return this.prismaService.outbox.update({
+      where: { id: eventId },
+      data: { failedAt: new Date(), attempts: { increment: 1 } },
+    });
+  }
+
   async bulkMarkEventsAsFailed(eventIds: string[]) {
+    if (eventIds.length === 0) {
+      this.logger.debug(`No outbox events to mark as failed`);
+      return;
+    }
     this.logger.debug(`Marking ${eventIds.length} outbox events as failed`);
 
     return this.prismaService.outbox.updateMany({
