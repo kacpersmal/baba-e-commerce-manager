@@ -24,6 +24,19 @@ export interface RedisConfig {
   password: string;
 }
 
+export interface AuthConfig {
+  jwt: {
+    accessSecret: string;
+    refreshSecret: string;
+    accessExpiration: string;
+    refreshExpiration: string;
+  };
+  bcrypt: {
+    saltRounds: number;
+    salt?: string;
+  };
+}
+
 @Injectable()
 export class AppConfigService {
   constructor(private configService: ConfigService) {}
@@ -60,6 +73,36 @@ export class AppConfigService {
       host: this.configService.get<string>('redis.host', 'localhost'),
       port: this.configService.get<number>('redis.port', 6379),
       password: this.configService.get<string>('redis.password', 'local_dev'),
+    };
+  }
+
+  get auth(): AuthConfig {
+    return {
+      jwt: {
+        accessSecret: this.configService.get<string>(
+          'auth.jwt.accessSecret',
+          'dev-access-secret-change-in-production',
+        ),
+        refreshSecret: this.configService.get<string>(
+          'auth.jwt.refreshSecret',
+          'dev-refresh-secret-change-in-production',
+        ),
+        accessExpiration: this.configService.get<string>(
+          'auth.jwt.accessExpiration',
+          '15m',
+        ),
+        refreshExpiration: this.configService.get<string>(
+          'auth.jwt.refreshExpiration',
+          '7d',
+        ),
+      },
+      bcrypt: {
+        saltRounds: this.configService.get<number>(
+          'auth.bcrypt.saltRounds',
+          10,
+        ),
+        salt: this.configService.get<string>('auth.bcrypt.salt'),
+      },
     };
   }
 }
