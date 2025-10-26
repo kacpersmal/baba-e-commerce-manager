@@ -27,7 +27,7 @@ model Outbox {
   attempts Int @default(0)
   lastError String?
   failedAt DateTime?
-
+  processedAt DateTime?
   @@index([aggregateId])
-  @@index([createdAt])
+  @@index([processedAt,createdAt])
 }
