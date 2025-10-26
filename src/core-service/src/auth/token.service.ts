@@ -29,6 +29,7 @@ export class TokenService {
     userId: string,
     email: string,
     role: Role,
+    deviceInfo?: { userAgent?: string; ipAddress?: string },
   ): Promise<TokenPair> {
     const payload: AuthJwtPayload = {
       sub: userId,
@@ -42,7 +43,7 @@ export class TokenService {
     ]);
 
     // Store refresh token in database
-    await this.storeRefreshToken(userId, refreshToken);
+    await this.storeRefreshToken(userId, refreshToken, deviceInfo);
 
     return {
       accessToken,
@@ -147,6 +148,7 @@ export class TokenService {
   private async storeRefreshToken(
     userId: string,
     token: string,
+    deviceInfo?: { userAgent?: string; ipAddress?: string },
   ): Promise<void> {
     try {
       const jwtConfig = this.configService.auth.jwt;
@@ -164,6 +166,8 @@ export class TokenService {
           token,
           userId,
           expiresAt,
+          userAgent: deviceInfo?.userAgent,
+          ipAddress: deviceInfo?.ipAddress,
         },
       });
     } catch (error) {
@@ -229,5 +233,59 @@ export class TokenService {
     });
 
     return result.count;
+  }
+
+  /**
+   * Get all active sessions for a user
+   */
+  async getUserSessions(
+    userId: string,
+    currentRefreshToken?: string,
+  ): Promise<any[]> {
+    const sessions = await this.prisma.refreshToken.findMany({
+      where: {
+        userId,
+        expiresAt: {
+          gt: new Date(),
+        },
+      },
+      orderBy: {
+        lastUsedAt: 'desc',
+      },
+      select: {
+        id: true,
+        createdAt: true,
+        lastUsedAt: true,
+        expiresAt: true,
+        userAgent: true,
+        ipAddress: true,
+        token: true,
+      },
+    });
+
+    return sessions.map((session) => ({
+      id: session.id,
+      createdAt: session.createdAt,
+      lastUsedAt: session.lastUsedAt,
+      expiresAt: session.expiresAt,
+      userAgent: session.userAgent,
+      ipAddress: session.ipAddress,
+      isCurrentSession: currentRefreshToken === session.token,
+    }));
+  }
+
+  /**
+   * Update last used timestamp for a refresh token
+   */
+  async updateTokenLastUsed(token: string): Promise<void> {
+    try {
+      await this.prisma.refreshToken.update({
+        where: { token },
+        data: { lastUsedAt: new Date() },
+      });
+    } catch (error) {
+      // Token might not exist, which is fine
+      return;
+    }
   }
 }
