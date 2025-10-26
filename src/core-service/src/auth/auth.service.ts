@@ -4,6 +4,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaService } from '../shared/prisma';
 import { HashService } from './hash.service';
 import { TokenService } from './token.service';
@@ -19,6 +20,12 @@ import {
   VerifyEmailDto,
 } from './dto/verification.dto';
 import { TokenPair } from './dto/jwt-payload.dto';
+import {
+  AppEvents,
+  UserRegisteredEvent,
+  EmailVerificationRequestedEvent,
+  PasswordResetRequestedEvent,
+} from '../shared/events';
 
 @Injectable()
 export class AuthService {
@@ -27,6 +34,7 @@ export class AuthService {
     private readonly tokenService: TokenService,
     private readonly hashService: HashService,
     private readonly verificationService: VerificationService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async createUser(userData: CreateUserDto) {
@@ -39,6 +47,36 @@ export class AuthService {
         passwordHash: hashedPassword,
       },
     });
+
+    // Emit user registered event
+    const userRegisteredEvent: UserRegisteredEvent = {
+      userId: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      timestamp: new Date(),
+    };
+    this.eventEmitter.emit(AppEvents.AUTH.USER_REGISTERED, userRegisteredEvent);
+
+    // Generate verification code and emit email verification event
+    const verificationCode = await this.verificationService.generateCode(
+      user.id,
+      VerificationType.ACCOUNT_VERIFICATION,
+    );
+
+    const emailVerificationEvent: EmailVerificationRequestedEvent = {
+      userId: user.id,
+      email: user.email,
+      code: verificationCode,
+      timestamp: new Date(),
+    };
+    this.eventEmitter.emit(
+      AppEvents.NOTIFICATIONS.EMAIL_VERIFICATION_REQUESTED,
+      emailVerificationEvent,
+    );
+
+    // Generate token pair
     const tokenPair = await this.tokenService.generateTokenPair(
       user.id,
       user.email,
@@ -118,7 +156,7 @@ export class AuthService {
   // Password Reset Flow
   async requestPasswordReset(
     dto: RequestPasswordResetDto,
-  ): Promise<{ message: string; code: string }> {
+  ): Promise<{ message: string }> {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
@@ -139,10 +177,20 @@ export class AuthService {
       VerificationType.PASSWORD_RESET,
     );
 
-    // TODO: Send email with code (integrate email service later)
+    // Emit password reset event (email will be sent asynchronously)
+    const passwordResetEvent: PasswordResetRequestedEvent = {
+      userId: user.id,
+      email: user.email,
+      code,
+      timestamp: new Date(),
+    };
+    this.eventEmitter.emit(
+      AppEvents.NOTIFICATIONS.PASSWORD_RESET_REQUESTED,
+      passwordResetEvent,
+    );
+
     return {
       message: 'Password reset code sent to email',
-      code, // Remove this in production - only for development
     };
   }
 
@@ -191,7 +239,7 @@ export class AuthService {
   // Email Verification Flow
   async requestEmailVerification(
     dto: RequestEmailVerificationDto,
-  ): Promise<{ message: string; code: string }> {
+  ): Promise<{ message: string }> {
     const user = await this.prisma.user.findUnique({
       where: { id: dto.userId },
     });
@@ -216,10 +264,20 @@ export class AuthService {
       VerificationType.ACCOUNT_VERIFICATION,
     );
 
-    // TODO: Send email with code (integrate email service later)
+    // Emit email verification event (email will be sent asynchronously)
+    const emailVerificationEvent: EmailVerificationRequestedEvent = {
+      userId: user.id,
+      email: user.email,
+      code,
+      timestamp: new Date(),
+    };
+    this.eventEmitter.emit(
+      AppEvents.NOTIFICATIONS.EMAIL_VERIFICATION_REQUESTED,
+      emailVerificationEvent,
+    );
+
     return {
       message: 'Verification code sent to email',
-      code, // Remove this in production - only for development
     };
   }
 

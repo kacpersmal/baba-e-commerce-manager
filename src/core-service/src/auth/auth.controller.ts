@@ -83,7 +83,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async requestPasswordReset(
     @Body() dto: RequestPasswordResetDto,
-  ): Promise<{ message: string; code: string }> {
+  ): Promise<{ message: string }> {
     return this.authService.requestPasswordReset(dto);
   }
 
@@ -100,7 +100,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async requestEmailVerification(
     @Body() dto: RequestEmailVerificationDto,
-  ): Promise<{ message: string; code: string }> {
+  ): Promise<{ message: string }> {
     return this.authService.requestEmailVerification(dto);
   }
 
