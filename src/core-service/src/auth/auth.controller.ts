@@ -16,6 +16,12 @@ import { TokenPair } from './dto/jwt-payload.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { LogoutDto, LogoutAllDto } from './dto/logout.dto';
+import {
+  RequestPasswordResetDto,
+  VerifyPasswordResetDto,
+  RequestEmailVerificationDto,
+  VerifyEmailDto,
+} from './dto/verification.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -70,5 +76,37 @@ export class AuthController {
     @Query('userId') userId: string,
   ): Promise<{ message: string }> {
     return this.authService.revokeSession(userId, sessionId);
+  }
+
+  // Password Reset Endpoints
+  @Post('password-reset/request')
+  @HttpCode(HttpStatus.OK)
+  async requestPasswordReset(
+    @Body() dto: RequestPasswordResetDto,
+  ): Promise<{ message: string; code: string }> {
+    return this.authService.requestPasswordReset(dto);
+  }
+
+  @Post('password-reset/verify')
+  @HttpCode(HttpStatus.OK)
+  async verifyPasswordReset(
+    @Body() dto: VerifyPasswordResetDto,
+  ): Promise<{ message: string }> {
+    return this.authService.verifyPasswordReset(dto);
+  }
+
+  // Email Verification Endpoints
+  @Post('email-verification/request')
+  @HttpCode(HttpStatus.OK)
+  async requestEmailVerification(
+    @Body() dto: RequestEmailVerificationDto,
+  ): Promise<{ message: string; code: string }> {
+    return this.authService.requestEmailVerification(dto);
+  }
+
+  @Post('email-verification/verify')
+  @HttpCode(HttpStatus.OK)
+  async verifyEmail(@Body() dto: VerifyEmailDto): Promise<TokenPair> {
+    return this.authService.verifyEmail(dto);
   }
 }

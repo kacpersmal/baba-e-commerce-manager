@@ -29,12 +29,14 @@ export class TokenService {
     userId: string,
     email: string,
     role: Role,
+    isVerified: boolean,
     deviceInfo?: { userAgent?: string; ipAddress?: string },
   ): Promise<TokenPair> {
     const payload: AuthJwtPayload = {
       sub: userId,
       email,
       role,
+      isVerified,
     };
 
     const [accessToken, refreshToken] = await Promise.all([
@@ -95,6 +97,7 @@ export class TokenService {
         userId: payload.sub,
         email: payload.email,
         role: payload.role,
+        isVerified: payload.isVerified,
       };
     } catch (error) {
       throw new UnauthorizedException('Invalid or expired access token');
@@ -133,6 +136,7 @@ export class TokenService {
         userId: payload.sub,
         email: payload.email,
         role: payload.role,
+        isVerified: payload.isVerified,
       };
     } catch (error) {
       if (error instanceof UnauthorizedException) {
@@ -217,7 +221,12 @@ export class TokenService {
     await this.revokeRefreshToken(refreshToken);
 
     // Generate new token pair
-    return this.generateTokenPair(user.id, user.email, user.role);
+    return this.generateTokenPair(
+      user.id,
+      user.email,
+      user.role,
+      user.isVerified,
+    );
   }
 
   /**

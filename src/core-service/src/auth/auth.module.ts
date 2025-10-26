@@ -4,6 +4,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TokenService } from './token.service';
 import { HashService } from './hash.service';
+import { VerificationService } from './verification.service';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { HashService } from './hash.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, TokenService, HashService],
+  providers: [AuthService, TokenService, HashService, VerificationService],
   exports: [TokenService],
 })
 export class AuthModule {}

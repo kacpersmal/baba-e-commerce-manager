@@ -4,6 +4,7 @@ export interface AuthJwtPayload {
   sub: string; // User ID
   email: string;
   role: string;
+  isVerified: boolean;
 }
 
 export class TokenPair {
@@ -17,4 +18,5 @@ export interface DecodedToken {
   userId: string;
   email: string;
   role: string;
+  isVerified: boolean;
 }
