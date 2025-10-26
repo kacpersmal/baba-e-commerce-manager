@@ -4,13 +4,14 @@ import { AppConfigService } from './config.service';
 import appConfig from './app.config';
 import databaseConfig from './database.config';
 import redisConfig from './redis.config';
+import authConfig from './auth.config';
 
 @Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig, redisConfig],
+      load: [appConfig, databaseConfig, redisConfig, authConfig],
       envFilePath: '.env',
       cache: true,
     }),
