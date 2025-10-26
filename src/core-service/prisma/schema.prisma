@@ -17,3 +17,17 @@ model HelloWorld {
   id      Int    @id @default(autoincrement())
   message String
 }
+
+model Outbox {
+  id String @id @default(cuid())
+  aggregateId String
+  eventType String
+  payload Json
+  createdAt DateTime @default(now())
+  attempts Int @default(0)
+  lastError String?
+  failedAt DateTime?
+
+  @@index([aggregateId])
+  @@index([createdAt])
+}
