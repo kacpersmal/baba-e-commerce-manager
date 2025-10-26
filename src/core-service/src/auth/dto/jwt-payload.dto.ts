@@ -1,11 +1,15 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export interface AuthJwtPayload {
   sub: string; // User ID
   email: string;
   role: string;
 }
 
-export interface TokenPair {
+export class TokenPair {
+  @ApiProperty()
   accessToken: string;
+  @ApiProperty()
   refreshToken: string;
 }
 

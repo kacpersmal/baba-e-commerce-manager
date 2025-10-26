@@ -6,11 +6,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../shared/prisma';
 import { AppConfigService } from '../shared/config';
-import {
-  AuthJwtPayload,
-  TokenPair,
-  DecodedToken,
-} from './interfaces/jwt-payload.interface';
+import { AuthJwtPayload, TokenPair, DecodedToken } from './dto/jwt-payload.dto';
 import { Role } from '@prisma/client';
 
 interface JwtDecodedPayload extends AuthJwtPayload {

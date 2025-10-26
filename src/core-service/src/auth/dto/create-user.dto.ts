@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsStrongPassword } from 'class-validator';
-import type { TokenPair } from '../interfaces/jwt-payload.interface';
+import type { TokenPair } from './jwt-payload.dto';
 
 export class CreateUserDto {
   @ApiProperty()

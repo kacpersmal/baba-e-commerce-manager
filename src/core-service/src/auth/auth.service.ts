@@ -3,6 +3,7 @@ import { PrismaService } from '../shared/prisma';
 import { HashService } from './hash.service';
 import { TokenService } from './token.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -29,5 +30,23 @@ export class AuthService {
     );
 
     return { id: user.id, tokenPair };
+  }
+
+  async login(userData: LoginUserDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { email: userData.email },
+    });
+    if (!user) {
+      throw new Error('Invalid credentials');
+    }
+
+    const isPasswordValid = await this.hashService.compare(
+      userData.password,
+      user.passwordHash,
+    );
+    if (!isPasswordValid) {
+      throw new Error('Invalid credentials');
+    }
+    return this.tokenService.generateTokenPair(user.id, user.email, user.role);
   }
 }
