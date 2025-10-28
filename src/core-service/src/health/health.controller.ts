@@ -8,9 +8,11 @@ import {
 } from '@nestjs/terminus';
 import { PrismaHealthIndicator } from './prisma.health';
 import { RedisHealthIndicator } from './redis.health';
+import { Public } from '../auth/decorators/public.decorator';
 
 @Controller('health')
 @ApiTags('health')
+@Public()
 export class HealthController {
   constructor(
     private health: HealthCheckService,

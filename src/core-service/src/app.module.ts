@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AppConfigModule } from '@shared/config';
 import { PrismaModule } from '@shared/prisma';
@@ -6,6 +7,8 @@ import { RedisModule } from '@shared/redis';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @Module({
   imports: [
@@ -33,6 +36,20 @@ import { NotificationsModule } from './notifications/notifications.module';
     HealthModule,
     AuthModule,
     NotificationsModule,
+  ],
+  providers: [
+    // Apply JWT authentication globally to all routes
+    // Use @Public() decorator to bypass authentication
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    // Apply roles guard globally
+    // Use @Roles() decorator to require specific roles
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
   ],
 })
 export class AppModule {}
