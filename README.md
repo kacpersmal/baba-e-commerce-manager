@@ -1,5 +1,6 @@
 # Baba E-Commerce Manager
 
+Hej!
 [![Build Client App](https://github.com/kacpersmal/baba-e-commerce-manager/actions/workflows/build-client.yml/badge.svg)](https://github.com/kacpersmal/baba-e-commerce-manager/actions/workflows/build-client.yml)
 [![Build Core Service](https://github.com/kacpersmal/baba-e-commerce-manager/actions/workflows/build-core.yml/badge.svg)](https://github.com/kacpersmal/baba-e-commerce-manager/actions/workflows/build-core.yml)
 
