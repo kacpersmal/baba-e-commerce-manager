@@ -4,6 +4,8 @@ import {
   createRootRouteWithContext,
 } from '@tanstack/react-router'
 
+import { Footer } from "@/components/ui/footer";
+
 import { Header } from '@/features/shared/layout'
 
 import type { QueryClient } from '@tanstack/react-query'
@@ -25,6 +27,7 @@ function RootComponent() {
         <main className="flex-1">
           <Outlet />
         </main>
+        <Footer />
       </div>
     </>
   )
