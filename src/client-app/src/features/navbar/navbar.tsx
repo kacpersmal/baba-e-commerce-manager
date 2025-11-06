@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, } from "react";
 import { Link } from "@tanstack/react-router";
 import {
     NavigationMenu,
@@ -15,14 +15,11 @@ export function Navbar() {
     const [activeCategory, setActiveCategory] = useState(categories[0]);
     const [fade, setFade] = useState(false);
 
-    const leftColumnRef = useRef(null);
-    const [leftHeight, setLeftHeight] = useState(0);
 
-    useEffect(() => {
-        if (leftColumnRef.current) {
-            setLeftHeight(leftColumnRef.current.offsetHeight);
-        }
-    }, [activeCategory]);
+
+
+
+
 
     return (
         <div className="border-t border-gray-200 bg-white/90 backdrop-blur shadow-sm">
@@ -100,7 +97,7 @@ export function Navbar() {
                         <NavigationMenuItem>
                             <NavigationMenuLink asChild>
                                 <Link
-                                    to="/bestsellers"
+                                    to="/"
                                     className="inline-flex flex-row items-center gap-3 px-4 py-3 text-base text-brand-navy hover:text-orange-500 transition-colors whitespace-nowrap"
                                 >
                                     <Flame className="h-6 w-6 text-orange-500" />
@@ -113,7 +110,7 @@ export function Navbar() {
                         <NavigationMenuItem>
                             <NavigationMenuLink asChild>
                                 <Link
-                                    to="/new"
+                                    to="/"
                                     className="inline-flex flex-row items-center gap-3 px-4 py-3 text-base text-brand-navy hover:text-orange-500 transition-colors whitespace-nowrap"
                                 >
                                     <Sparkles className="h-6 w-6 text-purple-500" />
@@ -126,7 +123,7 @@ export function Navbar() {
                         <NavigationMenuItem>
                             <NavigationMenuLink asChild>
                                 <Link
-                                    to="/promotions"
+                                    to="/"
                                     className="inline-flex flex-row items-center gap-3 px-4 py-3 text-base text-brand-navy hover:text-orange-500 transition-colors whitespace-nowrap"
                                 >
                                     <PercentCircle className="h-6 w-6 text-red-500" />
@@ -139,7 +136,7 @@ export function Navbar() {
                         <NavigationMenuItem>
                             <NavigationMenuLink asChild>
                                 <Link
-                                    to="/help"
+                                    to="/"
                                     className="inline-flex flex-row items-center gap-3 px-4 py-3 text-base text-brand-navy hover:text-orange-500 transition-colors whitespace-nowrap"
                                 >
                                     <LifeBuoy className="h-6 w-6 text-blue-500" />
