@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import AuthContainer from '@/components/auth/auth-container'
+import AuthContainer from '@/features/auth/auth-container'
 
 export const Route = createFileRoute('/authDebug')({
   component: RouteComponent,
