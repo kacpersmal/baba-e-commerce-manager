@@ -32,7 +32,46 @@ npx prisma migrate dev --name migration_name
 npx prisma studio
 ```
 
-### Usage
+### Database Seeding
+
+Populate the database with initial data using seed scripts:
+
+```bash
+# Run all seed scripts
+npm run seed
+
+# Run specific seed script
+npm run seed:categories
+```
+
+**Creating New Seeds:**
+
+1. Create a new seed file in `prisma/seeds/` (e.g., `products.seed.ts`)
+2. Export a seed function that accepts a PrismaClient
+3. Add the function to `prisma/seeds/index.ts`
+4. Add a script in `package.json` for individual execution (optional)
+
+Example seed file structure:
+
+```typescript
+import { PrismaClient } from '@prisma/client';
+
+export async function seedProducts(client: PrismaClient) {
+  console.log('🌱 Seeding products...');
+  // Your seeding logic here
+  console.log('✅ Products seeded successfully!');
+}
+
+// Allow direct execution
+if (require.main === module) {
+  const prisma = new PrismaClient();
+  seedProducts(prisma)
+    .catch(console.error)
+    .finally(() => prisma.$disconnect());
+}
+```
+
+### Prisma Usage in Code
 
 ```typescript
 import { PrismaService } from '@shared/prisma';

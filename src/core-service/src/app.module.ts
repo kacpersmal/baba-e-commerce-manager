@@ -7,6 +7,7 @@ import { RedisModule } from '@shared/redis';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { ProductsModule } from './products/products.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
@@ -37,6 +38,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
     HealthModule,
     AuthModule,
     NotificationsModule,
+    ProductsModule,
     ThrottlerModule.forRoot({
       throttlers: [
         {
