@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as HealthRouteImport } from './routes/health'
+import { Route as AuthDebugRouteImport } from './routes/authDebug'
 import { Route as IndexRouteImport } from './routes/index'
 
 const HealthRoute = HealthRouteImport.update({
   id: '/health',
   path: '/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthDebugRoute = AuthDebugRouteImport.update({
+  id: '/authDebug',
+  path: '/authDebug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,27 +31,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/authDebug': typeof AuthDebugRoute
   '/health': typeof HealthRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/authDebug': typeof AuthDebugRoute
   '/health': typeof HealthRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/authDebug': typeof AuthDebugRoute
   '/health': typeof HealthRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/health'
+  fullPaths: '/' | '/authDebug' | '/health'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/health'
-  id: '__root__' | '/' | '/health'
+  to: '/' | '/authDebug' | '/health'
+  id: '__root__' | '/' | '/authDebug' | '/health'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthDebugRoute: typeof AuthDebugRoute
   HealthRoute: typeof HealthRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/health'
       fullPath: '/health'
       preLoaderRoute: typeof HealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/authDebug': {
+      id: '/authDebug'
+      path: '/authDebug'
+      fullPath: '/authDebug'
+      preLoaderRoute: typeof AuthDebugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthDebugRoute: AuthDebugRoute,
   HealthRoute: HealthRoute,
 }
 export const routeTree = rootRouteImport
