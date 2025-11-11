@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-async function seedCategories() {
+export async function seedCategories(client: PrismaClient = prisma) {
   console.log('🌱 Seeding categories...');
 
   // Define parent categories with their data
@@ -178,7 +178,7 @@ async function seedCategories() {
     const { children, ...parentCategory } = parentData;
 
     // Create parent category
-    const parent = await prisma.category.upsert({
+    const parent = await client.category.upsert({
       where: { slug: parentCategory.slug },
       update: parentCategory,
       create: parentCategory,
@@ -190,7 +190,7 @@ async function seedCategories() {
     if (children && children.length > 0) {
       for (const childData of children) {
         const childSlug = `${parentCategory.slug}-${childData.slug}`;
-        await prisma.category.upsert({
+        await client.category.upsert({
           where: { slug: childSlug },
           update: {
             ...childData,
@@ -211,6 +211,7 @@ async function seedCategories() {
   console.log('✅ Categories seeded successfully!');
 }
 
+// Allow running this seed file directly
 async function main() {
   try {
     await seedCategories();
@@ -222,4 +223,7 @@ async function main() {
   }
 }
 
-main();
+// Only run main if this file is executed directly
+if (require.main === module) {
+  main();
+}
