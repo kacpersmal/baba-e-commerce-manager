@@ -4,7 +4,7 @@ import {
   createRootRouteWithContext,
 } from '@tanstack/react-router'
 
-import { Footer } from "@/components/ui/footer";
+import { Footer } from "@/features/shared/layout/Footer";
 
 import { Header } from '@/features/shared/layout'
 
