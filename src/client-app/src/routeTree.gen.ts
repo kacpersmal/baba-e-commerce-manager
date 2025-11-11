@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as HealthRouteImport } from './routes/health'
+import { Route as AuthDebugRouteImport } from './routes/authDebug'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CategoryCategoryRouteImport } from './routes/category.$category'
 
 const HealthRoute = HealthRouteImport.update({
   id: '/health',
   path: '/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthDebugRoute = AuthDebugRouteImport.update({
+  id: '/authDebug',
+  path: '/authDebug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,30 +37,34 @@ const CategoryCategoryRoute = CategoryCategoryRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/authDebug': typeof AuthDebugRoute
   '/health': typeof HealthRoute
   '/category/$category': typeof CategoryCategoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/authDebug': typeof AuthDebugRoute
   '/health': typeof HealthRoute
   '/category/$category': typeof CategoryCategoryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/authDebug': typeof AuthDebugRoute
   '/health': typeof HealthRoute
   '/category/$category': typeof CategoryCategoryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/health' | '/category/$category'
+  fullPaths: '/' | '/authDebug' | '/health' | '/category/$category'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/health' | '/category/$category'
-  id: '__root__' | '/' | '/health' | '/category/$category'
+  to: '/' | '/authDebug' | '/health' | '/category/$category'
+  id: '__root__' | '/' | '/authDebug' | '/health' | '/category/$category'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthDebugRoute: typeof AuthDebugRoute
   HealthRoute: typeof HealthRoute
   CategoryCategoryRoute: typeof CategoryCategoryRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/health'
       fullPath: '/health'
       preLoaderRoute: typeof HealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/authDebug': {
+      id: '/authDebug'
+      path: '/authDebug'
+      fullPath: '/authDebug'
+      preLoaderRoute: typeof AuthDebugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthDebugRoute: AuthDebugRoute,
   HealthRoute: HealthRoute,
   CategoryCategoryRoute: CategoryCategoryRoute,
 }
