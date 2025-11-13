@@ -12,8 +12,10 @@ async function main() {
   try {
     // Import and run seed functions
     const { seedCategories } = await import('./categories.seed.js');
+    const { seedWarehouses } = await import('./warehouses.seed.js');
 
     await seedCategories(prisma);
+    await seedWarehouses(prisma);
 
     // Add more seed functions here as needed:
     // await seedProducts(prisma);
