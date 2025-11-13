@@ -7,6 +7,7 @@ import {
   FolderTree,
   Box,
   Building2,
+  Map,
 } from 'lucide-react'
 import {
   NavigationMenu,
@@ -39,6 +40,11 @@ const navigationItems = [
     title: 'Warehouses',
     icon: Warehouse,
     items: [
+      {
+        title: 'Warehouse Map',
+        href: '/admin/warehouses/map',
+        icon: Map,
+      },
       {
         title: 'Manage Warehouses',
         href: '/admin/warehouses',

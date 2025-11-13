@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as CategoryCategoryRouteImport } from './routes/category.$category'
 import { Route as AdminCategoriesRouteImport } from './routes/admin/categories'
+import { Route as AdminWarehousesMapRouteImport } from './routes/admin/warehouses/map'
 
 const HealthRoute = HealthRouteImport.update({
   id: '/health',
@@ -52,6 +53,11 @@ const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
   path: '/categories',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminWarehousesMapRoute = AdminWarehousesMapRouteImport.update({
+  id: '/warehouses/map',
+  path: '/warehouses/map',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/warehouses/map': typeof AdminWarehousesMapRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/warehouses/map': typeof AdminWarehousesMapRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/warehouses/map': typeof AdminWarehousesMapRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/category/$category'
     | '/admin/'
+    | '/admin/warehouses/map'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/category/$category'
     | '/admin'
+    | '/admin/warehouses/map'
   id:
     | '__root__'
     | '/'
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/category/$category'
     | '/admin/'
+    | '/admin/warehouses/map'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -168,17 +180,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCategoriesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/warehouses/map': {
+      id: '/admin/warehouses/map'
+      path: '/warehouses/map'
+      fullPath: '/admin/warehouses/map'
+      preLoaderRoute: typeof AdminWarehousesMapRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
   AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminWarehousesMapRoute: typeof AdminWarehousesMapRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminCategoriesRoute: AdminCategoriesRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminWarehousesMapRoute: AdminWarehousesMapRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
