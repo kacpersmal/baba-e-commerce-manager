@@ -1,11 +1,12 @@
 import { Link } from '@tanstack/react-router'
-import { Navbar } from "@/features/navbar/navbar";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Package, ShoppingCart, Search, User } from "lucide-react";
-
+import { Navbar } from '@/features/navbar/navbar'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Package, ShoppingCart, Search, User } from 'lucide-react'
+import { useAuthModalStore } from '@/features/auth/useAuthStore'
 
 export function Header() {
+  const toggleAuthModal = useAuthModalStore((s) => s.toggleAuthModal)
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-brand-cream/95 backdrop-blur supports-backdrop-filter:bg-brand-cream/60">
       {/* Top Bar */}
@@ -33,16 +34,23 @@ export function Header() {
           >
             <Search className="h-4 w-4 text-brand-navy" />
           </Button>
-
         </div>
-
 
         {/* User + Cart */}
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="hover:bg-orange-500/20">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hover:bg-orange-500/20"
+            onClick={toggleAuthModal}
+          >
             <User className="h-5 w-5 text-brand-navy" />
           </Button>
-          <Button variant="ghost" size="icon" className="hover:bg-orange-500/20 relative">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hover:bg-orange-500/20 relative"
+          >
             <ShoppingCart className="h-5 w-5 text-brand-navy" />
           </Button>
         </div>
@@ -51,7 +59,6 @@ export function Header() {
       {/* Categories Bar */}
 
       <Navbar />
-
     </header>
   )
 }

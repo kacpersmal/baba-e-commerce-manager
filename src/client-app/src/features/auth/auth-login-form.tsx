@@ -9,16 +9,19 @@ import {
   FieldLabel,
   FieldSeparator,
 } from '@/components/ui/field'
-
+import { useSignIn } from './authHooks'
 import { Input } from '@/components/ui/input'
 import { Button } from '../../components/ui/button'
 import { Github } from 'lucide-react'
+import { useAuthStore } from './useAuthStore'
 
 export default function LoginForm({
   hanldeRegisterFlag,
 }: {
   hanldeRegisterFlag: Dispatch<SetStateAction<boolean>>
 }) {
+  const signIn = useSignIn()
+  const setTokens = useAuthStore((s) => s.setTokens)
   const loginSchema = z.object({
     email: z.email(),
 
@@ -34,6 +37,22 @@ export default function LoginForm({
     },
     validators: {
       onSubmit: loginSchema,
+    },
+    onSubmit: async (values) => {
+      const body = {
+        email: values.value.email,
+        password: values.value.password,
+      }
+      const result = await signIn.mutateAsync(body)
+      const tokens = result.data
+
+      if (tokens) {
+        setTokens(tokens.accessToken, tokens.refreshToken)
+        localStorage.setItem('accesToken', tokens.accessToken)
+        // TEMPORARY: also store refresh token in localStorage due to project requirements
+        // DO NOT DO THIS , SAFETY BREACH
+        localStorage.setItem('refreshToken', tokens.accessToken)
+      }
     },
   })
   return (

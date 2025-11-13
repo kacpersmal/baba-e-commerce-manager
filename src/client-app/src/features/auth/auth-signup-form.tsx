@@ -1,4 +1,6 @@
 import { useForm } from '@tanstack/react-form'
+import { useAuthStore } from './useAuthStore'
+import { useSignUp } from './authHooks'
 import * as z from 'zod'
 import type { Dispatch, SetStateAction } from 'react'
 import {
@@ -18,17 +20,15 @@ export default function RegisterForm({
 }: {
   handleRegisterFlag: Dispatch<SetStateAction<boolean>>
 }) {
+  const signUp = useSignUp()
+  const setTokens = useAuthStore((s) => s.setTokens)
   const signUpSchema = z
     .object({
-      email: z.email(),
-      password: z
-        .string()
-        .min(8, 'Password must be at least 8 characters.')
-        .max(40, 'Password must be at most 40 characters.'),
-      confirmPassword: z
-        .string()
-        .min(8, 'Password must be at least 8 characters.')
-        .max(40, 'Password must be at most 40 characters.'),
+      firstName: z.string().min(1, 'First name required'),
+      lastName: z.string().min(1, 'Last name required'),
+      email: z.string().email('Provide valid email'),
+      password: z.string().min(8, 'Password must be at least 8 characters.'),
+      confirmPassword: z.string().min(8, 'Confirm your password'),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: 'Passwords do not match',
@@ -36,12 +36,32 @@ export default function RegisterForm({
     })
   const form = useForm({
     defaultValues: {
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       confirmPassword: '',
     },
     validators: {
       onSubmit: signUpSchema,
+    },
+    onSubmit: async (values) => {
+      const body = {
+        email: values.value.email,
+        firstName: values.value.firstName,
+        lastName: values.value.lastName,
+        password: values.value.password,
+      }
+      const result = await signUp.mutateAsync(body)
+      const tokens = result.data?.tokenPair
+
+      if (tokens) {
+        setTokens(tokens.accessToken, tokens.refreshToken)
+        localStorage.setItem('accesToken', tokens.accessToken)
+        // TEMPORARY: also store refresh token in localStorage due to project requirements
+        // DO NOT DO THIS , SAFETY BREACH
+        localStorage.setItem('refreshToken', tokens.accessToken)
+      }
     },
   })
   return (
@@ -87,60 +107,124 @@ export default function RegisterForm({
             }}
           />
           {/* PASSWORD FORM FIELD  */}
-          <form.Field
-            name="password"
-            children={(field) => {
-              const isInvalid =
-                field.state.meta.isTouched && !field.state.meta.isValid
-              return (
-                <Field data-invalid={isInvalid}>
-                  <div className="flex items-center">
-                    <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                  </div>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    aria-invalid={isInvalid}
-                    type="password"
-                    placeholder="******"
-                    required
-                  />
-                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                </Field>
-              )
-            }}
-          />
-          <form.Field
-            name="confirmPassword"
-            children={(field) => {
-              const isInvalid =
-                field.state.meta.isTouched && !field.state.meta.isValid
-              return (
-                <Field data-invalid={isInvalid}>
-                  <div className="flex items-center">
-                    <FieldLabel htmlFor={field.name}>
-                      Confirm your password
-                    </FieldLabel>
-                  </div>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    aria-invalid={isInvalid}
-                    type="password"
-                    placeholder="******"
-                    required
-                  />
-                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                </Field>
-              )
-            }}
-          />
+          <div className="flex gap-2">
+            <form.Field
+              name="firstName"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <div className="flex items-center">
+                      <FieldLabel htmlFor={field.name}>First Name</FieldLabel>
+                    </div>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={isInvalid}
+                      type="text"
+                      placeholder="Adrian"
+                      required
+                    />
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                )
+              }}
+            />
+            <form.Field
+              name="lastName"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <div className="flex items-center">
+                      <FieldLabel htmlFor={field.name}>Last Name</FieldLabel>
+                    </div>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={isInvalid}
+                      type="text"
+                      placeholder="Ozorek"
+                      required
+                    />
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                )
+              }}
+            />
+          </div>
+          <div className="flex gap-2">
+            <form.Field
+              name="password"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <div className="flex items-center">
+                      <FieldLabel htmlFor={field.name}>Password</FieldLabel>
+                    </div>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={isInvalid}
+                      type="password"
+                      placeholder="******"
+                      required
+                    />
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                )
+              }}
+            />
+            <form.Field
+              name="confirmPassword"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <div className="flex items-center">
+                      <FieldLabel htmlFor={field.name}>
+                        Confirm password
+                      </FieldLabel>
+                    </div>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={isInvalid}
+                      type="password"
+                      placeholder="******"
+                      required
+                    />
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                )
+              }}
+            />
+          </div>
 
           {/* Submit FIELD */}
           <Field>
