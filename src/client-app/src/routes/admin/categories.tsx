@@ -258,10 +258,9 @@ function RouteComponent() {
                     </p>
                     <div className="flex items-center gap-2">
                       {(() => {
-                        const IconComponent =
-                          LucideIcons[
-                            selectedCategory.icon as keyof typeof LucideIcons
-                          ] as React.ComponentType<{ className?: string }>
+                        const IconComponent = LucideIcons[
+                          selectedCategory.icon as keyof typeof LucideIcons
+                        ] as React.ComponentType<{ className?: string }>
                         return IconComponent &&
                           typeof IconComponent !== 'string' ? (
                           <div className="flex h-8 w-8 items-center justify-center rounded border bg-muted">
@@ -271,25 +270,6 @@ function RouteComponent() {
                       })()}
                       <code className="relative rounded bg-muted px-2 py-[0.3rem] font-mono text-sm">
                         {selectedCategory.icon}
-                      </code>
-                    </div>
-                  </div>
-                )}
-
-                {selectedCategory.color && (
-                  <div className="space-y-1.5">
-                    <p className="text-xs font-medium text-muted-foreground">
-                      Color
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <div
-                        className={cn(
-                          'h-5 w-5 rounded border',
-                          selectedCategory.color,
-                        )}
-                      />
-                      <code className="relative rounded bg-muted px-[0.5rem] py-[0.3rem] font-mono text-xs">
-                        {selectedCategory.color}
                       </code>
                     </div>
                   </div>
