@@ -50,7 +50,7 @@ const navigationItems = [
 
 export function AdminNav() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-brand-cream/95 backdrop-blur supports-backdrop-filter:bg-brand-cream/60">
+    <header className="sticky top-0 z-40 w-full border-b bg-brand-cream/95 backdrop-blur supports-backdrop-filter:bg-brand-cream/60">
       <div className="container mx-auto flex h-16 max-w-screen-2xl items-center px-4">
         <NavigationMenu viewport={false}>
           <NavigationMenuList>
