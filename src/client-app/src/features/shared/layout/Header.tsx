@@ -2,8 +2,8 @@ import { Link } from '@tanstack/react-router'
 import { Navbar } from "@/features/navbar/navbar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Package, ShoppingCart, Search, User } from "lucide-react";
-
+import { Package, Search, User } from "lucide-react";
+import { ShoppingCartContent } from '@/features/shoppingcart/shoppingcart';
 
 export function Header() {
   return (
@@ -29,9 +29,9 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-1 top-1/2 -translate-y-1/2 border border-brand-navy/30 hover:border-brand-orange hover:bg-orange-500/20 transition-colors h-8 w-8"
+            className="absolute right-1 top-1/2 -translate-y-1/2 border border-brand-navy/30 hover:border-brand-orange hover:bg-orange-500/20 group transition-colors h-8 w-8"
           >
-            <Search className="h-4 w-4 text-brand-navy" />
+            <Search className="h-5 w-5 text-brand-navy group-hover:text-orange-500 transition-colors" />
           </Button>
 
         </div>
@@ -39,12 +39,12 @@ export function Header() {
 
         {/* User + Cart */}
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="hover:bg-orange-500/20">
-            <User className="h-5 w-5 text-brand-navy" />
+          <Button variant="ghost" size="icon" className="hover:bg-orange-500/20 group">
+            <User className="h-5 w-5 text-brand-navy group-hover:text-orange-500 transition-colors" />
           </Button>
-          <Button variant="ghost" size="icon" className="hover:bg-orange-500/20 relative">
-            <ShoppingCart className="h-5 w-5 text-brand-navy" />
-          </Button>
+
+          <ShoppingCartContent />
+
         </div>
       </div>
 
