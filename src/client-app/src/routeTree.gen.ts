@@ -18,6 +18,7 @@ import { Route as CategoryCategoryRouteImport } from './routes/category.$categor
 import { Route as AdminCategoriesRouteImport } from './routes/admin/categories'
 import { Route as AdminWarehousesMapRouteImport } from './routes/admin/warehouses/map'
 import { Route as AdminWarehousesManageRouteImport } from './routes/admin/warehouses/manage'
+import { Route as AdminUsersManageRouteImport } from './routes/admin/users/manage'
 
 const HealthRoute = HealthRouteImport.update({
   id: '/health',
@@ -64,6 +65,11 @@ const AdminWarehousesManageRoute = AdminWarehousesManageRouteImport.update({
   path: '/warehouses/manage',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminUsersManageRoute = AdminUsersManageRouteImport.update({
+  id: '/users/manage',
+  path: '/users/manage',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/users/manage': typeof AdminUsersManageRoute
   '/admin/warehouses/manage': typeof AdminWarehousesManageRoute
   '/admin/warehouses/map': typeof AdminWarehousesMapRoute
 }
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/users/manage': typeof AdminUsersManageRoute
   '/admin/warehouses/manage': typeof AdminWarehousesManageRoute
   '/admin/warehouses/map': typeof AdminWarehousesMapRoute
 }
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/users/manage': typeof AdminUsersManageRoute
   '/admin/warehouses/manage': typeof AdminWarehousesManageRoute
   '/admin/warehouses/map': typeof AdminWarehousesMapRoute
 }
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/category/$category'
     | '/admin/'
+    | '/admin/users/manage'
     | '/admin/warehouses/manage'
     | '/admin/warehouses/map'
   fileRoutesByTo: FileRoutesByTo
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/category/$category'
     | '/admin'
+    | '/admin/users/manage'
     | '/admin/warehouses/manage'
     | '/admin/warehouses/map'
   id:
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/category/$category'
     | '/admin/'
+    | '/admin/users/manage'
     | '/admin/warehouses/manage'
     | '/admin/warehouses/map'
   fileRoutesById: FileRoutesById
@@ -206,12 +218,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminWarehousesManageRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/users/manage': {
+      id: '/admin/users/manage'
+      path: '/users/manage'
+      fullPath: '/admin/users/manage'
+      preLoaderRoute: typeof AdminUsersManageRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
   AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminUsersManageRoute: typeof AdminUsersManageRoute
   AdminWarehousesManageRoute: typeof AdminWarehousesManageRoute
   AdminWarehousesMapRoute: typeof AdminWarehousesMapRoute
 }
@@ -219,6 +239,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminCategoriesRoute: AdminCategoriesRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminUsersManageRoute: AdminUsersManageRoute,
   AdminWarehousesManageRoute: AdminWarehousesManageRoute,
   AdminWarehousesMapRoute: AdminWarehousesMapRoute,
 }

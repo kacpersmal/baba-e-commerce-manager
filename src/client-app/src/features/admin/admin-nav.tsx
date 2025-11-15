@@ -56,7 +56,9 @@ const navigationItems = [
   {
     title: 'Users',
     icon: Users,
-    items: [{ title: 'Manage Users', href: '/admin/users', icon: Users }],
+    items: [
+      { title: 'Manage Users', href: '/admin/users/manage', icon: Users },
+    ],
   },
 ]
 
