@@ -8,6 +8,7 @@ import {
   Box,
   Building2,
   Map,
+  Users,
 } from 'lucide-react'
 import {
   NavigationMenu,
@@ -51,6 +52,11 @@ const navigationItems = [
         icon: Building2,
       },
     ],
+  },
+  {
+    title: 'Users',
+    icon: Users,
+    items: [{ title: 'Manage Users', href: '/admin/users', icon: Users }],
   },
 ]
 
