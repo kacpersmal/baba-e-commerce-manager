@@ -1,11 +1,19 @@
 import { Link } from '@tanstack/react-router'
-import { Navbar } from "@/features/navbar/navbar";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Package, Search, User } from "lucide-react";
-import { ShoppingCartContent } from '@/features/shoppingcart/shoppingcart';
+import { Navbar } from '@/features/navbar/navbar'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { UserMenu } from '@/components/ui/user-menu'
+
+import { Package, ShoppingCart, Search, User, Settings } from 'lucide-react'
+import { useAuthModalStore } from '@/features/auth/useAuthStore'
+import { useAuthStore } from '@/lib/stores/auth-store'
+import { ShoppingCartContent } from '../../shoppingcart/shoppingcart'
 
 export function Header() {
+  const toggleAuthModal = useAuthModalStore((s: any) => s.toggleAuthModal)
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated())
+  const isAdmin = useAuthStore((state) => state.isAdmin())
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-brand-cream/95 backdrop-blur supports-backdrop-filter:bg-brand-cream/60">
       {/* Top Bar */}
@@ -29,29 +37,46 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-1 top-1/2 -translate-y-1/2 border border-brand-navy/30 hover:border-brand-orange hover:bg-orange-500/20 group transition-colors h-8 w-8"
+            className="absolute right-1 top-1/2 -translate-y-1/2 border border-brand-navy/30 hover:border-brand-orange hover:bg-orange-500/20 transition-colors h-8 w-8"
           >
-            <Search className="h-5 w-5 text-brand-navy group-hover:text-orange-500 transition-colors" />
+            <Search className="h-4 w-4 text-brand-navy" />
           </Button>
-
         </div>
 
-
-        {/* User + Cart */}
+        {/* Admin + User + Cart */}
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="hover:bg-orange-500/20 group">
-            <User className="h-5 w-5 text-brand-navy group-hover:text-orange-500 transition-colors" />
-          </Button>
+          {isAdmin && (
+            <Link to="/admin">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-orange-500/20"
+              >
+                <Settings className="h-5 w-5 text-brand-navy" />
+              </Button>
+            </Link>
+          )}
+
+          {isAuthenticated ? (
+            <UserMenu />
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-orange-500/20"
+              onClick={toggleAuthModal}
+            >
+              <User className="h-5 w-5 text-brand-navy" />
+            </Button>
+          )}
 
           <ShoppingCartContent />
-
         </div>
       </div>
 
       {/* Categories Bar */}
 
       <Navbar />
-
     </header>
   )
 }
