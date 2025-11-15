@@ -1,5 +1,6 @@
 import createClient from 'openapi-fetch'
 import type { paths } from './schema'
+import { useAuthStore } from '../stores/auth-store'
 
 export const apiClient = createClient<paths>({
   baseUrl: '/api',
@@ -8,8 +9,8 @@ export const apiClient = createClient<paths>({
 // Optional: Add request/response interceptors
 apiClient.use({
   async onRequest({ request }) {
-    // Add auth token if needed
-    const token = localStorage.getItem('accesToken')
+    // Get token from Zustand store
+    const token = useAuthStore.getState().accessToken
     if (token) {
       request.headers.set('Authorization', `Bearer ${token}`)
     }
@@ -17,11 +18,11 @@ apiClient.use({
   },
 
   async onResponse({ response }) {
-    // Handle errors globally
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}))
-      throw new Error(error.message || 'API request failed')
+    // Handle 401 Unauthorized - clear auth state
+    if (response.status === 401) {
+      useAuthStore.getState().clearAuth()
     }
+
     return response
   },
 })

@@ -10,12 +10,23 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as HealthRouteImport } from './routes/health'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as CategoryCategoryRouteImport } from './routes/category.$category'
+import { Route as AdminCategoriesRouteImport } from './routes/admin/categories'
+import { Route as AdminWarehousesMapRouteImport } from './routes/admin/warehouses/map'
+import { Route as AdminWarehousesManageRouteImport } from './routes/admin/warehouses/manage'
+import { Route as AdminUsersManageRouteImport } from './routes/admin/users/manage'
 
 const HealthRoute = HealthRouteImport.update({
   id: '/health',
   path: '/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -23,38 +34,108 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const CategoryCategoryRoute = CategoryCategoryRouteImport.update({
   id: '/category/$category',
   path: '/category/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminWarehousesMapRoute = AdminWarehousesMapRouteImport.update({
+  id: '/warehouses/map',
+  path: '/warehouses/map',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminWarehousesManageRoute = AdminWarehousesManageRouteImport.update({
+  id: '/warehouses/manage',
+  path: '/warehouses/manage',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersManageRoute = AdminUsersManageRouteImport.update({
+  id: '/users/manage',
+  path: '/users/manage',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/health': typeof HealthRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/users/manage': typeof AdminUsersManageRoute
+  '/admin/warehouses/manage': typeof AdminWarehousesManageRoute
+  '/admin/warehouses/map': typeof AdminWarehousesMapRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/health': typeof HealthRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/users/manage': typeof AdminUsersManageRoute
+  '/admin/warehouses/manage': typeof AdminWarehousesManageRoute
+  '/admin/warehouses/map': typeof AdminWarehousesMapRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/health': typeof HealthRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/users/manage': typeof AdminUsersManageRoute
+  '/admin/warehouses/manage': typeof AdminWarehousesManageRoute
+  '/admin/warehouses/map': typeof AdminWarehousesMapRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/health' | '/category/$category'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/health'
+    | '/admin/categories'
+    | '/category/$category'
+    | '/admin/'
+    | '/admin/users/manage'
+    | '/admin/warehouses/manage'
+    | '/admin/warehouses/map'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/health' | '/category/$category'
-  id: '__root__' | '/' | '/health' | '/category/$category'
+  to:
+    | '/'
+    | '/health'
+    | '/admin/categories'
+    | '/category/$category'
+    | '/admin'
+    | '/admin/users/manage'
+    | '/admin/warehouses/manage'
+    | '/admin/warehouses/map'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/health'
+    | '/admin/categories'
+    | '/category/$category'
+    | '/admin/'
+    | '/admin/users/manage'
+    | '/admin/warehouses/manage'
+    | '/admin/warehouses/map'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   HealthRoute: typeof HealthRoute
   CategoryCategoryRoute: typeof CategoryCategoryRoute
 }
@@ -68,12 +149,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/category/$category': {
       id: '/category/$category'
@@ -82,11 +177,58 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoryCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/categories': {
+      id: '/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/warehouses/map': {
+      id: '/admin/warehouses/map'
+      path: '/warehouses/map'
+      fullPath: '/admin/warehouses/map'
+      preLoaderRoute: typeof AdminWarehousesMapRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/warehouses/manage': {
+      id: '/admin/warehouses/manage'
+      path: '/warehouses/manage'
+      fullPath: '/admin/warehouses/manage'
+      preLoaderRoute: typeof AdminWarehousesManageRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users/manage': {
+      id: '/admin/users/manage'
+      path: '/users/manage'
+      fullPath: '/admin/users/manage'
+      preLoaderRoute: typeof AdminUsersManageRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminCategoriesRoute: typeof AdminCategoriesRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminUsersManageRoute: typeof AdminUsersManageRoute
+  AdminWarehousesManageRoute: typeof AdminWarehousesManageRoute
+  AdminWarehousesMapRoute: typeof AdminWarehousesMapRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminCategoriesRoute: AdminCategoriesRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminUsersManageRoute: AdminUsersManageRoute,
+  AdminWarehousesManageRoute: AdminWarehousesManageRoute,
+  AdminWarehousesMapRoute: AdminWarehousesMapRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   HealthRoute: HealthRoute,
   CategoryCategoryRoute: CategoryCategoryRoute,
 }

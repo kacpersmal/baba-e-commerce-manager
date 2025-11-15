@@ -13,7 +13,8 @@ import { useSignIn } from './authHooks'
 import { Input } from '@/components/ui/input'
 import { Button } from '../../components/ui/button'
 import { Github } from 'lucide-react'
-import { useAuthStore } from './useAuthStore'
+import { useAuthModalStore } from './useAuthStore'
+import { toast } from 'sonner'
 
 export default function LoginForm({
   hanldeRegisterFlag,
@@ -21,7 +22,7 @@ export default function LoginForm({
   hanldeRegisterFlag: Dispatch<SetStateAction<boolean>>
 }) {
   const signIn = useSignIn()
-  const setTokens = useAuthStore((s) => s.setTokens)
+  const toggleAuthModal = useAuthModalStore((s) => s.toggleAuthModal)
   const loginSchema = z.object({
     email: z.email(),
 
@@ -43,15 +44,12 @@ export default function LoginForm({
         email: values.value.email,
         password: values.value.password,
       }
-      const result = await signIn.mutateAsync(body)
-      const tokens = result.data
-
-      if (tokens) {
-        setTokens(tokens.accessToken, tokens.refreshToken)
-        localStorage.setItem('accesToken', tokens.accessToken)
-        // TEMPORARY: also store refresh token in localStorage due to project requirements
-        // DO NOT DO THIS , SAFETY BREACH
-        localStorage.setItem('refreshToken', tokens.accessToken)
+      try {
+        await signIn.mutateAsync(body)
+        toast.success('Successfully logged in!')
+        toggleAuthModal()
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : 'Login failed')
       }
     },
   })
