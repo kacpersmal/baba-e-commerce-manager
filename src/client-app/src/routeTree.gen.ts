@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as HealthRouteImport } from './routes/health'
-import { Route as AuthDebugRouteImport } from './routes/authDebug'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -23,11 +22,6 @@ import { Route as AdminUsersManageRouteImport } from './routes/admin/users/manag
 const HealthRoute = HealthRouteImport.update({
   id: '/health',
   path: '/health',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthDebugRoute = AuthDebugRouteImport.update({
-  id: '/authDebug',
-  path: '/authDebug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -74,7 +68,6 @@ const AdminUsersManageRoute = AdminUsersManageRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
-  '/authDebug': typeof AuthDebugRoute
   '/health': typeof HealthRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
@@ -85,7 +78,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/authDebug': typeof AuthDebugRoute
   '/health': typeof HealthRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
@@ -98,7 +90,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
-  '/authDebug': typeof AuthDebugRoute
   '/health': typeof HealthRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
@@ -112,7 +103,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
-    | '/authDebug'
     | '/health'
     | '/admin/categories'
     | '/category/$category'
@@ -123,7 +113,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/authDebug'
     | '/health'
     | '/admin/categories'
     | '/category/$category'
@@ -135,7 +124,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
-    | '/authDebug'
     | '/health'
     | '/admin/categories'
     | '/category/$category'
@@ -148,7 +136,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
-  AuthDebugRoute: typeof AuthDebugRoute
   HealthRoute: typeof HealthRoute
   CategoryCategoryRoute: typeof CategoryCategoryRoute
 }
@@ -160,13 +147,6 @@ declare module '@tanstack/react-router' {
       path: '/health'
       fullPath: '/health'
       preLoaderRoute: typeof HealthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/authDebug': {
-      id: '/authDebug'
-      path: '/authDebug'
-      fullPath: '/authDebug'
-      preLoaderRoute: typeof AuthDebugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -249,7 +229,6 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
-  AuthDebugRoute: AuthDebugRoute,
   HealthRoute: HealthRoute,
   CategoryCategoryRoute: CategoryCategoryRoute,
 }

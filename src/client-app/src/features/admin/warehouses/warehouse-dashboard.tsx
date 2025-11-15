@@ -54,11 +54,13 @@ export function WarehouseDashboard({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[600px] overflow-hidden rounded-lg border">
+          <div className="h-[600px] overflow-hidden rounded-lg border relative">
             <MapContainer
               center={center}
               zoom={6}
               style={{ height: '100%', width: '100%' }}
+              className="z-0"
+              zoomControl={true}
             >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

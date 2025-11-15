@@ -7,7 +7,7 @@ import { Package, ShoppingCart, Search, User, Settings } from 'lucide-react'
 import { useAuthModalStore } from '@/features/auth/useAuthStore'
 
 export function Header() {
-  const toggleAuthModal = useAuthModalStore((s:any) => s.toggleAuthModal)
+  const toggleAuthModal = useAuthModalStore((s: any) => s.toggleAuthModal)
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-brand-cream/95 backdrop-blur supports-backdrop-filter:bg-brand-cream/60">
       {/* Top Bar */}
@@ -49,8 +49,6 @@ export function Header() {
             </Button>
           </Link>
 
-        {/* User + Cart */}
-        <div className="flex items-center gap-3">
           <Button
             variant="ghost"
             size="icon"
