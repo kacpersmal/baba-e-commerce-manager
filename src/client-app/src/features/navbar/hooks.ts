@@ -14,6 +14,9 @@ export interface Category {
   updatedAt: string
 }
 
+
+
+
 /**
  * Hook to fetch all categories with 5 minute cache
  */

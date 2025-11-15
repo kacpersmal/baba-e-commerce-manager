@@ -302,6 +302,111 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/warehouses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all active warehouses with pagination */
+        get: operations["WarehousesController_findAll"];
+        put?: never;
+        /** Create a new warehouse (Admin only) */
+        post: operations["WarehousesController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/warehouses/code/{code}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get warehouse by code */
+        get: operations["WarehousesController_findByCode"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/warehouses/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get warehouse by ID */
+        get: operations["WarehousesController_findById"];
+        put?: never;
+        post?: never;
+        /** Soft delete a warehouse (Admin only) */
+        delete: operations["WarehousesController_remove"];
+        options?: never;
+        head?: never;
+        /** Update a warehouse (Admin only) */
+        patch: operations["WarehousesController_update"];
+        trace?: never;
+    };
+    "/warehouses/{id}/activate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reactivate a deactivated warehouse (Admin only) */
+        post: operations["WarehousesController_activate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/warehouses/admin/all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all warehouses including inactive ones (Admin only) */
+        get: operations["WarehousesController_findAllAdmin"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/warehouses/{id}/stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get warehouse statistics (Admin only) */
+        get: operations["WarehousesController_getStats"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -433,6 +538,109 @@ export interface components {
             order?: number;
             /** @description Parent category ID for subcategories */
             parentId?: string;
+        };
+        WarehouseResponseDto: {
+            id: string;
+            name: string;
+            code: string;
+            description?: string;
+            latitude: number;
+            longitude: number;
+            address: string;
+            city: string;
+            state?: string;
+            country: string;
+            postalCode: string;
+            contactName: string;
+            contactEmail: string;
+            contactPhone: string;
+            isActive: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            /** @description Total stock items (future) */
+            stockCount?: number;
+        };
+        CreateWarehouseDto: {
+            /** @example Magazyn Centralny Warszawa */
+            name: string;
+            /**
+             * @description Unique warehouse code
+             * @example WH-WAW-01
+             */
+            code: string;
+            /** @example Primary distribution center for North East region */
+            description?: string;
+            /**
+             * @description Latitude (-90 to 90)
+             * @example 52.2297
+             */
+            latitude: number;
+            /**
+             * @description Longitude (-180 to 180)
+             * @example 21.0122
+             */
+            longitude: number;
+            /** @example ul. Magazynowa 42 */
+            address: string;
+            /** @example Warszawa */
+            city: string;
+            /** @example Mazowieckie */
+            state?: string;
+            /** @example Polska */
+            country: string;
+            /** @example 00-001 */
+            postalCode: string;
+            /** @example Jan Kowalski */
+            contactName: string;
+            /**
+             * Format: email
+             * @example warehouse.waw@example.pl
+             */
+            contactEmail: string;
+            /** @example +48 22 123 4567 */
+            contactPhone: string;
+        };
+        UpdateWarehouseDto: {
+            /** @example Magazyn Centralny Warszawa */
+            name?: string;
+            /**
+             * @description Unique warehouse code
+             * @example WH-WAW-01
+             */
+            code?: string;
+            /** @example Primary distribution center for North East region */
+            description?: string;
+            /**
+             * @description Latitude (-90 to 90)
+             * @example 52.2297
+             */
+            latitude?: number;
+            /**
+             * @description Longitude (-180 to 180)
+             * @example 21.0122
+             */
+            longitude?: number;
+            /** @example ul. Magazynowa 42 */
+            address?: string;
+            /** @example Warszawa */
+            city?: string;
+            /** @example Mazowieckie */
+            state?: string;
+            /** @example Polska */
+            country?: string;
+            /** @example 00-001 */
+            postalCode?: string;
+            /** @example Jan Kowalski */
+            contactName?: string;
+            /**
+             * Format: email
+             * @example warehouse.waw@example.pl
+             */
+            contactEmail?: string;
+            /** @example +48 22 123 4567 */
+            contactPhone?: string;
         };
     };
     responses: never;
@@ -1264,6 +1472,396 @@ export interface operations {
                 };
             };
             /** @description Category not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    WarehousesController_findAll: {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                city?: string;
+                country?: string;
+                /** @description Search in name, code, or city */
+                search?: string;
+                isActive?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns paginated list of warehouses */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    WarehousesController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateWarehouseDto"];
+            };
+        };
+        responses: {
+            /** @description Warehouse created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WarehouseResponseDto"];
+                };
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden - Admin role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Warehouse code already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    WarehousesController_findByCode: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Warehouse code */
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns the warehouse */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WarehouseResponseDto"];
+                };
+            };
+            /** @description Warehouse not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    WarehousesController_findById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Warehouse ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns the warehouse */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WarehouseResponseDto"];
+                };
+            };
+            /** @description Warehouse not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    WarehousesController_remove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Warehouse ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Warehouse deactivated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Warehouse has active stock items */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden - Admin role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Warehouse not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    WarehousesController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Warehouse ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateWarehouseDto"];
+            };
+        };
+        responses: {
+            /** @description Warehouse updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WarehouseResponseDto"];
+                };
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden - Admin role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Warehouse not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Code conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    WarehousesController_activate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Warehouse ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Warehouse activated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WarehouseResponseDto"];
+                };
+            };
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WarehouseResponseDto"];
+                };
+            };
+            /** @description Warehouse is already active */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden - Admin role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Warehouse not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    WarehousesController_findAllAdmin: {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                city?: string;
+                country?: string;
+                /** @description Search in name, code, or city */
+                search?: string;
+                isActive?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns paginated list of all warehouses */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden - Admin role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    WarehousesController_getStats: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Warehouse ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns warehouse statistics */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden - Admin role required */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Warehouse not found */
             404: {
                 headers: {
                     [name: string]: unknown;
