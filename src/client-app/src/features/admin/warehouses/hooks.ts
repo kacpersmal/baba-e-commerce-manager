@@ -1,8 +1,16 @@
-import { useQuery, type UseQueryResult } from '@tanstack/react-query'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  type UseQueryResult,
+  type UseMutationResult,
+} from '@tanstack/react-query'
 import { apiClient } from '@/lib/api/client'
 import type { components } from '@/lib/api/schema'
 
 type WarehouseResponse = components['schemas']['WarehouseResponseDto']
+type CreateWarehouseDto = components['schemas']['CreateWarehouseDto']
+type UpdateWarehouseDto = components['schemas']['UpdateWarehouseDto']
 
 interface PaginationMeta {
   total: number
@@ -41,6 +49,73 @@ export function useWarehouses(
       if (error) throw error
       if (!data) throw new Error('No data returned from API')
       return data as unknown as PaginatedWarehouseResponse
+    },
+  })
+}
+
+export function useCreateWarehouse(): UseMutationResult<
+  WarehouseResponse,
+  Error,
+  CreateWarehouseDto
+> {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (dto: CreateWarehouseDto) => {
+      const { data, error } = await apiClient.POST('/warehouses', {
+        body: dto,
+      })
+      if (error) throw error
+      if (!data) throw new Error('No data returned from API')
+      return data as unknown as WarehouseResponse
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: warehousesKeys.lists() })
+    },
+  })
+}
+
+export function useUpdateWarehouse(): UseMutationResult<
+  WarehouseResponse,
+  Error,
+  { id: string; dto: UpdateWarehouseDto }
+> {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      dto,
+    }: {
+      id: string
+      dto: UpdateWarehouseDto
+    }) => {
+      const { data, error } = await apiClient.PATCH('/warehouses/{id}', {
+        params: { path: { id } },
+        body: dto,
+      })
+      if (error) throw error
+      if (!data) throw new Error('No data returned from API')
+      return data as unknown as WarehouseResponse
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: warehousesKeys.lists() })
+    },
+  })
+}
+
+export function useDeleteWarehouse(): UseMutationResult<void, Error, string> {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await apiClient.DELETE('/warehouses/{id}', {
+        params: { path: { id } },
+      })
+      if (error) throw error
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: warehousesKeys.lists() })
     },
   })
 }

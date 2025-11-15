@@ -47,7 +47,7 @@ const navigationItems = [
       },
       {
         title: 'Manage Warehouses',
-        href: '/admin/warehouses',
+        href: '/admin/warehouses/manage',
         icon: Building2,
       },
     ],
