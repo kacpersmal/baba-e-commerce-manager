@@ -22,7 +22,7 @@ export function useSignIn() {
       const { data, error } = await apiClient.POST('/auth/login', { body })
 
       if (error) {
-        throw new Error(error.message || 'Login failed')
+        throw new Error((error as any)?.message || 'Login failed')
       }
 
       if (!data?.accessToken || !data?.refreshToken) {
@@ -45,7 +45,7 @@ export function useSignUp() {
       const { data, error } = await apiClient.POST('/auth/register', { body })
 
       if (error) {
-        throw new Error(error.message || 'Registration failed')
+        throw new Error((error as any)?.message || 'Registration failed')
       }
 
       if (!data?.tokenPair?.accessToken || !data?.tokenPair?.refreshToken) {
