@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { apiClient } from '@/lib/api'
+import { useAuthStore } from '@/lib/stores/auth-store'
 
 type AuthRegisterBody = {
   email: string
@@ -14,6 +15,8 @@ type AuthSignIn = {
 }
 
 export function useSignIn() {
+  const setTokens = useAuthStore((state) => state.setTokens)
+
   return useMutation({
     mutationFn: async (body: AuthSignIn) => {
       const { data, error } = await apiClient.POST('/auth/login', { body })
@@ -22,15 +25,12 @@ export function useSignIn() {
         throw new Error(error.message || 'Login failed')
       }
 
-      if (data) {
-        // Store tokens
-        if (data.accessToken) {
-          localStorage.setItem('accessToken', data.accessToken)
-        }
-        if (data.refreshToken) {
-          localStorage.setItem('refreshToken', data.refreshToken)
-        }
+      if (!data?.accessToken || !data?.refreshToken) {
+        throw new Error('Invalid response: missing tokens')
       }
+
+      // Store tokens in Zustand store (also persists to localStorage)
+      setTokens(data.accessToken, data.refreshToken)
 
       return data
     },
@@ -38,6 +38,8 @@ export function useSignIn() {
 }
 
 export function useSignUp() {
+  const setTokens = useAuthStore((state) => state.setTokens)
+
   return useMutation({
     mutationFn: async (body: AuthRegisterBody) => {
       const { data, error } = await apiClient.POST('/auth/register', { body })
@@ -46,17 +48,22 @@ export function useSignUp() {
         throw new Error(error.message || 'Registration failed')
       }
 
-      if (data) {
-        // Store tokens
-        if (data.accessToken) {
-          localStorage.setItem('accessToken', data.accessToken)
-        }
-        if (data.refreshToken) {
-          localStorage.setItem('refreshToken', data.refreshToken)
-        }
+      if (!data?.tokenPair?.accessToken || !data?.tokenPair?.refreshToken) {
+        throw new Error('Invalid response: missing tokens')
       }
+
+      // Store tokens in Zustand store (also persists to localStorage)
+      setTokens(data.tokenPair.accessToken, data.tokenPair.refreshToken)
 
       return data
     },
   })
+}
+
+export function useSignOut() {
+  const clearAuth = useAuthStore((state) => state.clearAuth)
+
+  return () => {
+    clearAuth()
+  }
 }

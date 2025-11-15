@@ -2,12 +2,17 @@ import { Link } from '@tanstack/react-router'
 import { Navbar } from '@/features/navbar/navbar'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { UserMenu } from '@/components/ui/user-menu'
 
 import { Package, ShoppingCart, Search, User, Settings } from 'lucide-react'
 import { useAuthModalStore } from '@/features/auth/useAuthStore'
+import { useAuthStore } from '@/lib/stores/auth-store'
 
 export function Header() {
   const toggleAuthModal = useAuthModalStore((s: any) => s.toggleAuthModal)
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated())
+  const isAdmin = useAuthStore((state) => state.isAdmin())
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-brand-cream/95 backdrop-blur supports-backdrop-filter:bg-brand-cream/60">
       {/* Top Bar */}
@@ -39,24 +44,31 @@ export function Header() {
 
         {/* Admin + User + Cart */}
         <div className="flex items-center gap-3">
-          <Link to="/admin">
+          {isAdmin && (
+            <Link to="/admin">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-orange-500/20"
+              >
+                <Settings className="h-5 w-5 text-brand-navy" />
+              </Button>
+            </Link>
+          )}
+
+          {isAuthenticated ? (
+            <UserMenu />
+          ) : (
             <Button
               variant="ghost"
               size="icon"
               className="hover:bg-orange-500/20"
+              onClick={toggleAuthModal}
             >
-              <Settings className="h-5 w-5 text-brand-navy" />
+              <User className="h-5 w-5 text-brand-navy" />
             </Button>
-          </Link>
+          )}
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="hover:bg-orange-500/20"
-            onClick={toggleAuthModal}
-          >
-            <User className="h-5 w-5 text-brand-navy" />
-          </Button>
           <Button
             variant="ghost"
             size="icon"

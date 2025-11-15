@@ -1,8 +1,9 @@
 import { useForm } from '@tanstack/react-form'
-import { useAuthStore } from './useAuthStore'
+import { useAuthModalStore } from './useAuthStore'
 import { useSignUp } from './authHooks'
 import * as z from 'zod'
 import type { Dispatch, SetStateAction } from 'react'
+import { toast } from 'sonner'
 import {
   Field,
   FieldDescription,
@@ -21,7 +22,7 @@ export default function RegisterForm({
   handleRegisterFlag: Dispatch<SetStateAction<boolean>>
 }) {
   const signUp = useSignUp()
-  const setTokens = useAuthStore((s) => s.setTokens)
+  const toggleAuthModal = useAuthModalStore((s) => s.toggleAuthModal)
   const signUpSchema = z
     .object({
       firstName: z.string().min(1, 'First name required'),
@@ -52,15 +53,14 @@ export default function RegisterForm({
         lastName: values.value.lastName,
         password: values.value.password,
       }
-      const result = await signUp.mutateAsync(body)
-      const tokens = result.data?.tokenPair
-
-      if (tokens) {
-        setTokens(tokens.accessToken, tokens.refreshToken)
-        localStorage.setItem('accesToken', tokens.accessToken)
-        // TEMPORARY: also store refresh token in localStorage due to project requirements
-        // DO NOT DO THIS , SAFETY BREACH
-        localStorage.setItem('refreshToken', tokens.accessToken)
+      try {
+        await signUp.mutateAsync(body)
+        toast.success('Account created! You are now logged in.')
+        toggleAuthModal()
+      } catch (error) {
+        toast.error(
+          error instanceof Error ? error.message : 'Registration failed',
+        )
       }
     },
   })
