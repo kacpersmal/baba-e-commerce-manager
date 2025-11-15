@@ -9,7 +9,7 @@ export const apiClient = createClient<paths>({
 apiClient.use({
   async onRequest({ request }) {
     // Add auth token if needed
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('accesToken')
     if (token) {
       request.headers.set('Authorization', `Bearer ${token}`)
     }
