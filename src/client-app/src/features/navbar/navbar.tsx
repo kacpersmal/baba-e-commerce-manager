@@ -31,7 +31,7 @@ export function Navbar() {
   return (
     <div className="border-t backdrop-blur shadow-sm">
       <div className="container mx-auto px-4 max-w-screen-2xl">
-        <NavigationMenu className="w-full">
+        <NavigationMenu className="w-full z-50">
           <NavigationMenuList className="px-0 flex gap-2">
             {/* Wszystkie kategorie */}
             <NavigationMenuItem>

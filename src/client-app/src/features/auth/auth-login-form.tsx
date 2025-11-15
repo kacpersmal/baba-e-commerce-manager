@@ -9,16 +9,20 @@ import {
   FieldLabel,
   FieldSeparator,
 } from '@/components/ui/field'
-
+import { useSignIn } from './authHooks'
 import { Input } from '@/components/ui/input'
 import { Button } from '../../components/ui/button'
 import { Github } from 'lucide-react'
+import { useAuthModalStore } from './useAuthStore'
+import { toast } from 'sonner'
 
 export default function LoginForm({
   hanldeRegisterFlag,
 }: {
   hanldeRegisterFlag: Dispatch<SetStateAction<boolean>>
 }) {
+  const signIn = useSignIn()
+  const toggleAuthModal = useAuthModalStore((s) => s.toggleAuthModal)
   const loginSchema = z.object({
     email: z.email(),
 
@@ -34,6 +38,19 @@ export default function LoginForm({
     },
     validators: {
       onSubmit: loginSchema,
+    },
+    onSubmit: async (values) => {
+      const body = {
+        email: values.value.email,
+        password: values.value.password,
+      }
+      try {
+        await signIn.mutateAsync(body)
+        toast.success('Successfully logged in!')
+        toggleAuthModal()
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : 'Login failed')
+      }
     },
   })
   return (
