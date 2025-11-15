@@ -4,9 +4,10 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { UserMenu } from '@/components/ui/user-menu'
 
-import { Package, ShoppingCart, Search, User, Settings } from 'lucide-react'
+import { Package, Search, User, Settings } from 'lucide-react'
 import { useAuthModalStore } from '@/features/auth/useAuthStore'
 import { useAuthStore } from '@/lib/stores/auth-store'
+import { ShoppingCartContent } from '../../shoppingcart/shoppingcart'
 
 export function Header() {
   const toggleAuthModal = useAuthModalStore((s: any) => s.toggleAuthModal)
@@ -69,13 +70,7 @@ export function Header() {
             </Button>
           )}
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="hover:bg-orange-500/20 relative"
-          >
-            <ShoppingCart className="h-5 w-5 text-brand-navy" />
-          </Button>
+          <ShoppingCartContent />
         </div>
       </div>
 
