@@ -1,19 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Plus, Loader2, AlertCircle, Edit2, Trash2, Search } from 'lucide-react'
+import { Loader2, AlertCircle, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
-import { WarehouseForm } from '@/features/admin/warehouses/warehouse-form'
+import { PageHeader } from '@/features/admin/shared/components/page-header'
+import { SearchInput } from '@/features/admin/shared/components/search-input'
+import { DeleteConfirmDialog } from '@/features/admin/shared/components/delete-confirm-dialog'
+import { WarehouseCard } from '@/features/admin/warehouses/components/warehouse-card'
+import { CreateWarehouseDialog } from '@/features/admin/warehouses/components/create-warehouse-dialog'
+import { EditWarehouseDialog } from '@/features/admin/warehouses/components/edit-warehouse-dialog'
 import {
   useWarehouses,
   useCreateWarehouse,
@@ -83,7 +79,7 @@ function RouteComponent() {
     )
   }
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!warehouseToDelete) return
     deleteMutation.mutate(warehouseToDelete.id, {
       onSuccess: () => {
@@ -130,104 +126,32 @@ function RouteComponent() {
 
   return (
     <div className="container mx-auto p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Manage Warehouses</h1>
-          <p className="text-muted-foreground">
-            Create, edit, and manage warehouse locations
-          </p>
-        </div>
-        <Button onClick={() => setIsCreateDialogOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Warehouse
-        </Button>
-      </div>
-
-      {/* Search */}
       <div className="mb-6">
-        <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search warehouses..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
-          />
-        </div>
+        <PageHeader
+          title="Manage Warehouses"
+          description="Create, edit, and manage warehouse locations"
+          actionLabel="Add Warehouse"
+          onAction={() => setIsCreateDialogOpen(true)}
+        />
       </div>
 
-      {/* Warehouses Grid */}
+      <div className="mb-6">
+        <SearchInput
+          value={searchQuery}
+          onChange={setSearchQuery}
+          placeholder="Search warehouses..."
+          className="max-w-md"
+        />
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {filteredWarehouses.map((warehouse) => (
-          <Card key={warehouse.id} className="transition-all hover:shadow-md">
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <h3 className="font-semibold">{warehouse.name}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {warehouse.code}
-                    </p>
-                  </div>
-                  <Badge variant={warehouse.isActive ? 'default' : 'secondary'}>
-                    {warehouse.isActive ? 'Active' : 'Inactive'}
-                  </Badge>
-                </div>
-
-                {warehouse.description && (
-                  <p className="line-clamp-2 text-sm text-muted-foreground">
-                    {warehouse.description}
-                  </p>
-                )}
-
-                <div className="space-y-1 text-sm">
-                  <p className="font-medium">Location</p>
-                  <p className="text-muted-foreground">{warehouse.address}</p>
-                  <p className="text-muted-foreground">
-                    {warehouse.city}
-                    {warehouse.state && `, ${warehouse.state}`}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {warehouse.country} {warehouse.postalCode}
-                  </p>
-                </div>
-
-                <div className="space-y-1 text-sm">
-                  <p className="font-medium">Contact</p>
-                  <p className="text-muted-foreground">
-                    {warehouse.contactName}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {warehouse.contactEmail}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {warehouse.contactPhone}
-                  </p>
-                </div>
-
-                <div className="flex gap-2 pt-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => openEditDialog(warehouse)}
-                  >
-                    <Edit2 className="mr-2 h-3.5 w-3.5" />
-                    Edit
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => openDeleteDialog(warehouse)}
-                  >
-                    <Trash2 className="mr-2 h-3.5 w-3.5 text-destructive" />
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <WarehouseCard
+            key={warehouse.id}
+            warehouse={warehouse}
+            onEdit={openEditDialog}
+            onDelete={openDeleteDialog}
+          />
         ))}
       </div>
 
@@ -251,79 +175,29 @@ function RouteComponent() {
         </Card>
       )}
 
-      {/* Create Dialog */}
-      <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Create New Warehouse</DialogTitle>
-            <DialogDescription>
-              Add a new warehouse location to your system
-            </DialogDescription>
-          </DialogHeader>
-          <WarehouseForm
-            onSubmit={handleCreate}
-            onCancel={() => setIsCreateDialogOpen(false)}
-            isSubmitting={createMutation.isPending}
-          />
-        </DialogContent>
-      </Dialog>
+      <CreateWarehouseDialog
+        open={isCreateDialogOpen}
+        onOpenChange={setIsCreateDialogOpen}
+        onSubmit={handleCreate}
+        isPending={createMutation.isPending}
+      />
 
-      {/* Edit Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Edit Warehouse</DialogTitle>
-            <DialogDescription>
-              Update warehouse location and information
-            </DialogDescription>
-          </DialogHeader>
-          {warehouseToEdit && (
-            <WarehouseForm
-              warehouse={warehouseToEdit}
-              onSubmit={handleUpdate}
-              onCancel={() => {
-                setIsEditDialogOpen(false)
-                setWarehouseToEdit(null)
-              }}
-              isSubmitting={updateMutation.isPending}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+      <EditWarehouseDialog
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+        warehouse={warehouseToEdit}
+        onSubmit={handleUpdate}
+        isPending={updateMutation.isPending}
+      />
 
-      {/* Delete Dialog */}
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete Warehouse</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete "{warehouseToDelete?.name}"? This
-              action will soft delete the warehouse.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-end gap-2 pt-4">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setIsDeleteDialogOpen(false)
-                setWarehouseToDelete(null)
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDelete}
-              disabled={deleteMutation.isPending}
-            >
-              {deleteMutation.isPending && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Delete
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <DeleteConfirmDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        title="Delete Warehouse"
+        description={`Are you sure you want to delete "${warehouseToDelete?.name}"? This action will soft delete the warehouse.`}
+        onConfirm={handleDelete}
+        isPending={deleteMutation.isPending}
+      />
     </div>
   )
 }
