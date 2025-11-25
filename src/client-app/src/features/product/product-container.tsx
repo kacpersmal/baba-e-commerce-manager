@@ -5,7 +5,7 @@ export default function ProductContainer() {
   return (
     <>
       <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-background -z-10" />
-      <div className="felx flex-col min-h-[85vh] pt-10 px-20">
+      <div className="felx flex-col min-h-[85vh] pt-10 px-20 ">
         <div className=" w-full flex p-2 gap-4">
           <div className="w-2/3  h-96 rounded-xl ">
             <img
