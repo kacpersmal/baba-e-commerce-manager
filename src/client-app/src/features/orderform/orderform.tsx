@@ -217,7 +217,7 @@ export default function OrderForm() {
                                 onClose={() => setShowMapModal(false)}
                                 className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
                             >
-                                <Dialog.Panel className="bg-white rounded-lg p-4 w-[90%] max-w-3xl h-[50%]">
+                                <Dialog.Panel className="bg-neutral-800 rounded-lg p-4 w-[90%] max-w-3xl h-[50%]">
                                     <Dialog.Title className="text-lg font-semibold mb-2">
                                         Wybierz paczkomat
                                     </Dialog.Title>
