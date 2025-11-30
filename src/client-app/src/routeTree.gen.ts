@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ProductRouteImport } from './routes/product'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -20,6 +21,11 @@ import { Route as AdminWarehousesMapRouteImport } from './routes/admin/warehouse
 import { Route as AdminWarehousesManageRouteImport } from './routes/admin/warehouses/manage'
 import { Route as AdminUsersManageRouteImport } from './routes/admin/users/manage'
 
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductRoute = ProductRouteImport.update({
   id: '/product',
   path: '/product',
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/health': typeof HealthRoute
   '/product': typeof ProductRoute
+  '/products': typeof ProductsRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin/': typeof AdminIndexRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/health': typeof HealthRoute
   '/product': typeof ProductRoute
+  '/products': typeof ProductsRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin': typeof AdminIndexRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/health': typeof HealthRoute
   '/product': typeof ProductRoute
+  '/products': typeof ProductsRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin/': typeof AdminIndexRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/health'
     | '/product'
+    | '/products'
     | '/admin/categories'
     | '/category/$category'
     | '/admin/'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/'
     | '/health'
     | '/product'
+    | '/products'
     | '/admin/categories'
     | '/category/$category'
     | '/admin'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/health'
     | '/product'
+    | '/products'
     | '/admin/categories'
     | '/category/$category'
     | '/admin/'
@@ -150,11 +162,19 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   HealthRoute: typeof HealthRoute
   ProductRoute: typeof ProductRoute
+  ProductsRoute: typeof ProductsRoute
   CategoryCategoryRoute: typeof CategoryCategoryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/product': {
       id: '/product'
       path: '/product'
@@ -251,6 +271,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   HealthRoute: HealthRoute,
   ProductRoute: ProductRoute,
+  ProductsRoute: ProductsRoute,
   CategoryCategoryRoute: CategoryCategoryRoute,
 }
 export const routeTree = rootRouteImport
