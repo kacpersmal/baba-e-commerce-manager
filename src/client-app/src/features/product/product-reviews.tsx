@@ -2,9 +2,9 @@ import mockProductReviews from './mock-reviews'
 import { ProductReviewItem } from './product-review-item'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-console.log('ŁADUJE SIĘ: product-reviews.tsx')
+// console.log('ŁADUJE SIĘ: product-reviews.tsx')
 export default function ProductReviews() {
-  console.log('=== EXPORT DZIAŁA: ProductReviews ===')
+  // console.log('=== EXPORT DZIAŁA: ProductReviews ===')
 
   return (
     <section className="w-full  rounded-xl  p-6 mt-4 shadow-sm">
