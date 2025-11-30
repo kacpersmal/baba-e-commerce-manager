@@ -35,7 +35,7 @@ export function Navbar() {
           <NavigationMenuList className="px-0 flex gap-2">
             {/* Wszystkie kategorie */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="text-brand-navy text-base px-4 py-3 hover:text-orange-500 transition-colors">
+              <NavigationMenuTrigger className="text-brand-navy text-base bg-black/1 px-4 py-3 hover:text-orange-500 transition-colors">
                 Wszystkie Kategorie
               </NavigationMenuTrigger>
 

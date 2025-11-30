@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ProductRouteImport } from './routes/product'
+import { Route as OrderformRouteImport } from './routes/orderform'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -29,6 +30,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const ProductRoute = ProductRouteImport.update({
   id: '/product',
   path: '/product',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrderformRoute = OrderformRouteImport.update({
+  id: '/orderform',
+  path: '/orderform',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HealthRoute = HealthRouteImport.update({
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/health': typeof HealthRoute
+  '/orderform': typeof OrderformRoute
   '/product': typeof ProductRoute
   '/products': typeof ProductsRoute
   '/admin/categories': typeof AdminCategoriesRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/health': typeof HealthRoute
+  '/orderform': typeof OrderformRoute
   '/product': typeof ProductRoute
   '/products': typeof ProductsRoute
   '/admin/categories': typeof AdminCategoriesRoute
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/health': typeof HealthRoute
+  '/orderform': typeof OrderformRoute
   '/product': typeof ProductRoute
   '/products': typeof ProductsRoute
   '/admin/categories': typeof AdminCategoriesRoute
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/health'
+    | '/orderform'
     | '/product'
     | '/products'
     | '/admin/categories'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/health'
+    | '/orderform'
     | '/product'
     | '/products'
     | '/admin/categories'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/health'
+    | '/orderform'
     | '/product'
     | '/products'
     | '/admin/categories'
@@ -161,6 +173,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   HealthRoute: typeof HealthRoute
+  OrderformRoute: typeof OrderformRoute
   ProductRoute: typeof ProductRoute
   ProductsRoute: typeof ProductsRoute
   CategoryCategoryRoute: typeof CategoryCategoryRoute
@@ -180,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/product'
       fullPath: '/product'
       preLoaderRoute: typeof ProductRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orderform': {
+      id: '/orderform'
+      path: '/orderform'
+      fullPath: '/orderform'
+      preLoaderRoute: typeof OrderformRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/health': {
@@ -270,6 +290,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   HealthRoute: HealthRoute,
+  OrderformRoute: OrderformRoute,
   ProductRoute: ProductRoute,
   ProductsRoute: ProductsRoute,
   CategoryCategoryRoute: CategoryCategoryRoute,
