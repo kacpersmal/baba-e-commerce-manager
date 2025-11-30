@@ -1,5 +1,6 @@
 import ProductDescription from './product-description'
 import ProductOptions from './product-options'
+import ProductReviews from './product-reviews'
 
 export default function ProductContainer() {
   return (
@@ -40,6 +41,9 @@ export default function ProductContainer() {
           <div className="w-1/3  min-h-96 rounded-md border p-5">
             <ProductOptions />
           </div>
+        </div>
+        <div className="w-full p-2">
+          <ProductReviews />
         </div>
       </div>
     </>
