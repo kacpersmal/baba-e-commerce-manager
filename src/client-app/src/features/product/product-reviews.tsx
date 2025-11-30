@@ -1,13 +1,13 @@
-import mockProductReviews from "./mock-reviews";
-import { ProductReviewItem } from "./product-review-item";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-console.log("ŁADUJE SIĘ: product-reviews.tsx");
+import mockProductReviews from './mock-reviews'
+import { ProductReviewItem } from './product-review-item'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+console.log('ŁADUJE SIĘ: product-reviews.tsx')
 export default function ProductReviews() {
-  console.log("=== EXPORT DZIAŁA: ProductReviews ===");
+  console.log('=== EXPORT DZIAŁA: ProductReviews ===')
 
   return (
-    <section className="w-full border rounded-xl bg-background/60 p-6 mt-4 shadow-sm">
+    <section className="w-full  rounded-xl  p-6 mt-4 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold">Opinie klientów</h2>
         <span className="text-sm text-muted-foreground">
@@ -29,6 +29,5 @@ export default function ProductReviews() {
         </Button>
       </div>
     </section>
-  );
+  )
 }
-
