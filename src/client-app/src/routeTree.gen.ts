@@ -21,6 +21,8 @@ import { Route as AdminCategoriesRouteImport } from './routes/admin/categories'
 import { Route as AdminWarehousesMapRouteImport } from './routes/admin/warehouses/map'
 import { Route as AdminWarehousesManageRouteImport } from './routes/admin/warehouses/manage'
 import { Route as AdminUsersManageRouteImport } from './routes/admin/users/manage'
+import { Route as AdminProductsManageRouteImport } from './routes/admin/products/manage'
+import { Route as AdminOrdersManageRouteImport } from './routes/admin/orders/manage'
 
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
@@ -82,6 +84,16 @@ const AdminUsersManageRoute = AdminUsersManageRouteImport.update({
   path: '/users/manage',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminProductsManageRoute = AdminProductsManageRouteImport.update({
+  id: '/products/manage',
+  path: '/products/manage',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOrdersManageRoute = AdminOrdersManageRouteImport.update({
+  id: '/orders/manage',
+  path: '/orders/manage',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -93,6 +105,8 @@ export interface FileRoutesByFullPath {
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/orders/manage': typeof AdminOrdersManageRoute
+  '/admin/products/manage': typeof AdminProductsManageRoute
   '/admin/users/manage': typeof AdminUsersManageRoute
   '/admin/warehouses/manage': typeof AdminWarehousesManageRoute
   '/admin/warehouses/map': typeof AdminWarehousesMapRoute
@@ -106,6 +120,8 @@ export interface FileRoutesByTo {
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/orders/manage': typeof AdminOrdersManageRoute
+  '/admin/products/manage': typeof AdminProductsManageRoute
   '/admin/users/manage': typeof AdminUsersManageRoute
   '/admin/warehouses/manage': typeof AdminWarehousesManageRoute
   '/admin/warehouses/map': typeof AdminWarehousesMapRoute
@@ -121,6 +137,8 @@ export interface FileRoutesById {
   '/admin/categories': typeof AdminCategoriesRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/orders/manage': typeof AdminOrdersManageRoute
+  '/admin/products/manage': typeof AdminProductsManageRoute
   '/admin/users/manage': typeof AdminUsersManageRoute
   '/admin/warehouses/manage': typeof AdminWarehousesManageRoute
   '/admin/warehouses/map': typeof AdminWarehousesMapRoute
@@ -137,6 +155,8 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/category/$category'
     | '/admin/'
+    | '/admin/orders/manage'
+    | '/admin/products/manage'
     | '/admin/users/manage'
     | '/admin/warehouses/manage'
     | '/admin/warehouses/map'
@@ -150,6 +170,8 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/category/$category'
     | '/admin'
+    | '/admin/orders/manage'
+    | '/admin/products/manage'
     | '/admin/users/manage'
     | '/admin/warehouses/manage'
     | '/admin/warehouses/map'
@@ -164,6 +186,8 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/category/$category'
     | '/admin/'
+    | '/admin/orders/manage'
+    | '/admin/products/manage'
     | '/admin/users/manage'
     | '/admin/warehouses/manage'
     | '/admin/warehouses/map'
@@ -265,12 +289,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersManageRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/products/manage': {
+      id: '/admin/products/manage'
+      path: '/products/manage'
+      fullPath: '/admin/products/manage'
+      preLoaderRoute: typeof AdminProductsManageRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/orders/manage': {
+      id: '/admin/orders/manage'
+      path: '/orders/manage'
+      fullPath: '/admin/orders/manage'
+      preLoaderRoute: typeof AdminOrdersManageRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
   AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminOrdersManageRoute: typeof AdminOrdersManageRoute
+  AdminProductsManageRoute: typeof AdminProductsManageRoute
   AdminUsersManageRoute: typeof AdminUsersManageRoute
   AdminWarehousesManageRoute: typeof AdminWarehousesManageRoute
   AdminWarehousesMapRoute: typeof AdminWarehousesMapRoute
@@ -279,6 +319,8 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminCategoriesRoute: AdminCategoriesRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminOrdersManageRoute: AdminOrdersManageRoute,
+  AdminProductsManageRoute: AdminProductsManageRoute,
   AdminUsersManageRoute: AdminUsersManageRoute,
   AdminWarehousesManageRoute: AdminWarehousesManageRoute,
   AdminWarehousesMapRoute: AdminWarehousesMapRoute,

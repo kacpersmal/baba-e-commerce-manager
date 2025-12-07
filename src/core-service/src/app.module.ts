@@ -10,6 +10,9 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { ProductsModule } from './products/products.module';
 import { WarehousesModule } from './warehouses/warehouses.module';
 import { UsersModule } from './users/users.module';
+import { CartModule } from './cart/cart.module';
+import { OrdersModule } from './orders/orders.module';
+import { PaymentsModule } from './payments/payments.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
@@ -43,6 +46,9 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
     ProductsModule,
     WarehousesModule,
     UsersModule,
+    CartModule,
+    OrdersModule,
+    PaymentsModule,
     ThrottlerModule.forRoot({
       throttlers: [
         {

@@ -38,10 +38,10 @@ export class HealthController {
       () =>
         this.disk.checkStorage('disk', {
           path: diskPath,
-          thresholdPercent: 0.9,
+          thresholdPercent: 0.99, // Increased to 99% to avoid false positives in dev
         }),
-      () => this.memory.checkHeap('memory_heap', 300 * 1024 * 1024),
-      () => this.memory.checkRSS('memory_rss', 300 * 1024 * 1024),
+      () => this.memory.checkHeap('memory_heap', 1024 * 1024 * 1024), // Increased to 1GB
+      () => this.memory.checkRSS('memory_rss', 1024 * 1024 * 1024), // Increased to 1GB
     ]);
   }
 

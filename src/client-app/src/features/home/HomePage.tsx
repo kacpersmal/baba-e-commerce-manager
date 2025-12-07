@@ -8,6 +8,7 @@ import { FAQItem } from '@/components/ui/faq-item'
 import { Newsletter } from '@/components/ui/newsletter'
 import { Footer } from '@/components/ui/footer'
 import { CountdownTimer } from '@/components/ui/countdown-timer'
+import { Link } from '@tanstack/react-router'
 import {
   featuredProducts,
   promoBenefits,
@@ -38,10 +39,12 @@ export function HomePage() {
                 szybka dostawa prosto do Twoich drzwi.
               </p>
             </div>
-            <Button size="lg" className="gap-2 text-base">
-              <ShoppingCart className="h-5 w-5" />
-              Sprawdź oferty
-            </Button>
+            <Link to="/products">
+              <Button size="lg" className="gap-2 text-base">
+                <ShoppingCart className="h-5 w-5" />
+                Sprawdź oferty
+              </Button>
+            </Link>
             <div className="mt-8 grid grid-cols-3 gap-6 sm:gap-12">
               <div className="space-y-1">
                 <div className="flex items-center justify-center gap-2">
