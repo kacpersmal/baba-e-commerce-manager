@@ -1,16 +1,24 @@
 import { Button } from '@/components/ui/button'
 import { Star, TicketPercent } from 'lucide-react'
 
-export default function ProductDescription() {
+type ProductDescriptionProps = {
+  product: {
+    name: string
+    description: string
+    price: number
+    sku: string
+  }
+}
+
+export default function ProductDescription({
+  product,
+}: ProductDescriptionProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between px-1 ">
-        <h1 className="text-xl font-bold">
-          Laptop APPLE MacBook Air Retina M2 16GB RAM{' '}
-        </h1>
+        <h1 className="text-xl font-bold">{product.name}</h1>
         <p className="bg-secondary rounded-2xl px-2 py-1 text-sm font-bold shrink-0 ">
-          {' '}
-          Best Seller
+          SKU: {product.sku}
         </p>
       </div>
       <div className="flex items-center gap-2">
@@ -21,52 +29,35 @@ export default function ProductDescription() {
           <Star color="white"></Star>
           <p className="text-white"> 4.5 </p>
         </Button>
-        <p className="text-primary/50">1453 Revievs</p>
-        <div className="flex gap-2">
-          <p className="text-primary/50 font-light text-sm">1305 sold</p>
-
-          <p className="text-green-600 font-light text-sm border-l-2 pl-2">
-            247 in stock
-          </p>
-        </div>
+        <p className="text-primary/50">Zobacz recenzje</p>
       </div>
-      <div className="text-primary/70">
-        The MacBook Pro is a reliable and high-performance laptop designed for
-        work, creativity, and everyday use. It features a fast Apple Silicon
-        processor, a bright and sharp Retina display, and long-lasting battery
-        life, ensuring smooth performance even during demanding tasks. Its sleek
-        aluminum body gives it a premium look, while the backlit keyboard and
-        precise trackpad provide excellent comfort. Perfect for professionals
-        and anyone who values top-quality technology.
-      </div>
+      <div className="text-primary/70">{product.description}</div>
       <div>
-        <h1 className="text-2xl font-bold py-5">$420.69</h1>
+        <h1 className="text-2xl font-bold py-5">
+          {product.price.toFixed(2)} zł
+        </h1>
       </div>
       <div className="flex gap-2 items-center">
         <TicketPercent size={40} />
-        <p className="text-xl font-bold">Offers</p>
+        <p className="text-xl font-bold">Oferty</p>
       </div>
       <div className="flex gap-4 items-center">
         <div className="min-h-36 w-1/3 border rounded-2xl p-5 flex flex-col gap-2">
-          <h1 className="text-md font-bold">No Cost EMI</h1>
-          <p className="text-primary/50 ">
-            Upto $10 EMI interest savings on Amazon pay ICICI
-          </p>
-          <Button className="h-8">{'1 Offer >'}</Button>
+          <h1 className="text-md font-bold">Darmowa dostawa</h1>
+          <p className="text-primary/50 ">Przy zamówieniach powyżej 100 zł</p>
+          <Button className="h-8">Szczegóły</Button>
         </div>
         <div className="min-h-36 w-1/3 border rounded-2xl p-5 flex flex-col gap-2">
-          <h1 className="text-md font-bold">Bank Offer</h1>
-          <p className="text-primary/50 ">
-            Upto $30 Discount on select credit cards, select...
-          </p>
-          <Button className="h-8">{'28 Offer >'}</Button>
+          <h1 className="text-md font-bold">Gwarancja</h1>
+          <p className="text-primary/50 ">2 lata gwarancji producenta</p>
+          <Button className="h-8">Szczegóły</Button>
         </div>
         <div className="min-h-36 w-1/3 border rounded-2xl p-5 flex flex-col gap-2">
-          <h1 className="text-md font-bold">Partner Offers</h1>
+          <h1 className="text-md font-bold">Zwroty</h1>
           <p className="text-primary/50 ">
-            Get GST invoice and save up to 28% on business...
+            30 dni na zwrot lub wymianę produktu
           </p>
-          <Button className="h-8">{'28 Offer >'}</Button>
+          <Button className="h-8">Szczegóły</Button>
         </div>
       </div>
     </div>

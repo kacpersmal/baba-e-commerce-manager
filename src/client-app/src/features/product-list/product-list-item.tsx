@@ -1,25 +1,40 @@
 import { Button } from '@/components/ui/button'
 import { Heart, Star } from 'lucide-react'
-import type { ProductListItem } from './mock-data'
+import { useCartStore } from '@/lib/stores/cart-store'
+import { Link } from '@tanstack/react-router'
+
+type ProductData = {
+  id: number
+  name: string
+  description: string
+  price: number
+  imageUrl?: string
+  slug: string
+}
+
 export default function ProductListItem({
   productData,
 }: {
-  productData: ProductListItem
+  productData: ProductData
 }) {
   return (
     <div className="flex w-full p-4 border rounded-2xl justify-between ">
-      <div className="flex gap-4 items-center">
-        <ProductListItemImage imgsrc={productData.imgsrc} />
+      <Link
+        to="/product"
+        search={{ slug: productData.slug }}
+        className="flex gap-4 items-center flex-1 hover:opacity-80 transition-opacity"
+      >
+        <ProductListItemImage
+          imgsrc={productData.imageUrl || './Placeholder_view_vector.svg.png'}
+        />
         <ProductListItemDescription
           name={productData.name}
-          rewievs={productData.rewievs}
-          rating={productData.rating}
           description={productData.description}
         />
-      </div>
+      </Link>
       <ProductListItemPricing
         price={productData.price}
-        discount={productData.discount}
+        productId={productData.id}
       />
     </div>
   )
@@ -27,13 +42,9 @@ export default function ProductListItem({
 
 function ProductListItemDescription({
   name,
-  rewievs,
-  rating,
   description,
 }: {
   name: string
-  rewievs: number
-  rating: number
   description: string
 }) {
   return (
@@ -45,16 +56,11 @@ function ProductListItemDescription({
           variant="ghost"
         >
           <Star color="white"></Star>
-          <p className="text-white"> {rating} </p>
+          <p className="text-white"> 4.5 </p>
         </Button>
-        <p className="text-primary/50">{rewievs} Revievs</p>
+        <p className="text-primary/50">Zobacz szczegóły</p>
       </div>
       <p className="text-primary/50 text-sm line-clamp-3">{description}</p>
-
-      <div className="flex gap-2 mt-2 items-center">
-        <Button variant="outline">Add to cart</Button>
-        <Button className=""> Buy now</Button>
-      </div>
     </div>
   )
 }
@@ -79,30 +85,31 @@ function ProductListItemImage({ imgsrc }: { imgsrc: string }) {
 
 function ProductListItemPricing({
   price,
-  discount,
+  productId,
 }: {
   price: number
-  discount: number | undefined
+  productId: number
 }) {
+  const { addToCart, isLoading } = useCartStore()
+
+  const handleAddToCart = async () => {
+    await addToCart(productId, 1)
+  }
+
   return (
     <div className="flex flex-col gap-1 w-full items-end">
-      {discount ? (
-        <h1 className="font-bold"> ${price - price * (discount / 100)} </h1>
-      ) : (
-        <h1 className="font-bold"> ${price} </h1>
-      )}
-
-      <h1 className="font-bold"></h1>
-      {discount && (
-        <div className="flex gap-2 items-center text-sm">
-          <p className="line-through text-primary/60">${price}</p>
-          <p className="border rounded-[5px] text-xs border-green-700/50 bg bg-green-600/30 text-green-500 px-1 font-bold">
-            -{discount}%
-          </p>
-        </div>
-      )}
-
-      <p className="text-primary/60 font-bold">Free delivery</p>
+      <h1 className="font-bold"> {price.toFixed(2)} zł </h1>
+      <p className="text-primary/60 font-bold">Darmowa dostawa</p>
+      <div className="flex gap-2 mt-2 items-center">
+        <Button
+          variant="outline"
+          onClick={handleAddToCart}
+          disabled={isLoading}
+        >
+          Dodaj do koszyka
+        </Button>
+        <Button className="">Kup teraz</Button>
+      </div>
     </div>
   )
 }

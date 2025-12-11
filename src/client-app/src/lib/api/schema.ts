@@ -302,6 +302,129 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all products */
+        get: operations["ProductsController_findAll"];
+        put?: never;
+        /** Create new product (Admin only) */
+        post: operations["ProductsController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/products/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get product by ID */
+        get: operations["ProductsController_findOne"];
+        put?: never;
+        post?: never;
+        /** Delete product (Admin only) */
+        delete: operations["ProductsController_remove"];
+        options?: never;
+        head?: never;
+        /** Update product (Admin only) */
+        patch: operations["ProductsController_update"];
+        trace?: never;
+    };
+    "/products/slug/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get product by slug */
+        get: operations["ProductsController_findBySlug"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/products/{id}/stock": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get product stock summary */
+        get: operations["ProductsController_getProductStock"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/products/stock": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create stock entry for product (Admin only) */
+        post: operations["ProductsController_createStock"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/products/stock/{productId}/{warehouseId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete stock entry (Admin only) */
+        delete: operations["ProductsController_deleteStock"];
+        options?: never;
+        head?: never;
+        /** Update stock quantity (Admin only) */
+        patch: operations["ProductsController_updateStock"];
+        trace?: never;
+    };
+    "/products/stock/{productId}/{warehouseId}/adjust": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Adjust stock quantity (Admin only) */
+        post: operations["ProductsController_adjustStock"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/warehouses": {
         parameters: {
             query?: never;
@@ -511,6 +634,196 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/cart": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get user cart */
+        get: operations["CartController_getCart"];
+        put?: never;
+        post?: never;
+        /** Clear cart */
+        delete: operations["CartController_clearCart"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/cart/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add item to cart */
+        post: operations["CartController_addToCart"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/cart/items/{productId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove item from cart */
+        delete: operations["CartController_removeFromCart"];
+        options?: never;
+        head?: never;
+        /** Update cart item quantity */
+        patch: operations["CartController_updateCartItem"];
+        trace?: never;
+    };
+    "/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all orders (Admin only) */
+        get: operations["OrdersController_findAll"];
+        put?: never;
+        /** Create order from cart */
+        post: operations["OrdersController_createOrder"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get order statistics (Admin only) */
+        get: operations["OrdersController_getStats"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/my-orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get current user orders */
+        get: operations["OrdersController_getMyOrders"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get order by ID */
+        get: operations["OrdersController_findOne"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/number/{orderNumber}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get order by order number */
+        get: operations["OrdersController_findByOrderNumber"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/{id}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update order status (Admin only) */
+        patch: operations["OrdersController_updateStatus"];
+        trace?: never;
+    };
+    "/payments/process": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Process payment (Mock) */
+        post: operations["PaymentsController_processPayment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/payments/order/{orderId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get payment by order ID */
+        get: operations["PaymentsController_getPaymentByOrderId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -642,6 +955,136 @@ export interface components {
             order?: number;
             /** @description Parent category ID for subcategories */
             parentId?: string;
+        };
+        ProductWithStockDto: {
+            id: string;
+            name: string;
+            slug: string;
+            description?: string;
+            price: number;
+            sku: string;
+            imageUrl?: string;
+            categoryId: string;
+            isActive: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            /** @example 150 */
+            totalStock: number;
+            /** @example 10 */
+            totalReserved: number;
+            /** @example 140 */
+            availableStock: number;
+        };
+        PaginatedProductResponse: {
+            data: components["schemas"]["ProductWithStockDto"][];
+            meta: {
+                total: number;
+                page: number;
+                limit: number;
+                totalPages: number;
+            };
+        };
+        ProductResponseDto: {
+            id: string;
+            name: string;
+            slug: string;
+            description?: string;
+            price: number;
+            sku: string;
+            imageUrl?: string;
+            categoryId: string;
+            isActive: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        CreateProductDto: {
+            /** @example Wireless Headphones Pro */
+            name: string;
+            /** @example wireless-headphones-pro */
+            slug: string;
+            /** @example Premium wireless headphones with noise cancellation */
+            description?: string;
+            /** @example 299.99 */
+            price: number;
+            /** @example WHP-001 */
+            sku: string;
+            /**
+             * Format: uri
+             * @example https://example.com/image.jpg
+             */
+            imageUrl?: string;
+            /** @example cm1abc123 */
+            categoryId: string;
+            /**
+             * @default true
+             * @example true
+             */
+            isActive: boolean;
+        };
+        UpdateProductDto: {
+            /** @example Wireless Headphones Pro */
+            name?: string;
+            /** @example wireless-headphones-pro */
+            slug?: string;
+            /** @example Premium wireless headphones with noise cancellation */
+            description?: string;
+            /** @example 299.99 */
+            price?: number;
+            /** @example WHP-001 */
+            sku?: string;
+            /**
+             * Format: uri
+             * @example https://example.com/image.jpg
+             */
+            imageUrl?: string;
+            /** @example cm1abc123 */
+            categoryId?: string;
+            /**
+             * @default true
+             * @example true
+             */
+            isActive: boolean;
+        };
+        StockResponseDto: {
+            id: string;
+            productId: string;
+            warehouseId: string;
+            quantity: number;
+            reserved: number;
+            available: number;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        ProductStockSummaryDto: {
+            productId: string;
+            productName: string;
+            totalQuantity: number;
+            totalReserved: number;
+            totalAvailable: number;
+            stockByWarehouse: components["schemas"]["StockResponseDto"][];
+        };
+        CreateStockDto: {
+            /** @example cm1product123 */
+            productId: string;
+            /** @example cm1warehouse123 */
+            warehouseId: string;
+            /** @example 100 */
+            quantity: number;
+        };
+        UpdateStockDto: {
+            /** @example 50 */
+            quantity: number;
+        };
+        AdjustStockDto: {
+            /**
+             * @description Amount to add (positive) or subtract (negative)
+             * @example 10
+             */
+            adjustment: number;
         };
         WarehouseResponseDto: {
             id: string;
@@ -778,6 +1221,129 @@ export interface components {
              * @enum {string}
              */
             role: "USER" | "ADMIN";
+        };
+        CartItemResponseDto: {
+            id: string;
+            productId: string;
+            productName: string;
+            productPrice: number;
+            productImageUrl: string;
+            quantity: number;
+            subtotal: number;
+        };
+        CartResponseDto: {
+            id: string;
+            userId: string;
+            items: components["schemas"]["CartItemResponseDto"][];
+            totalItems: number;
+            totalAmount: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        AddToCartDto: {
+            /** @example cm1product123 */
+            productId: string;
+            /** @example 1 */
+            quantity: number;
+        };
+        UpdateCartItemDto: {
+            /** @example 2 */
+            quantity: number;
+        };
+        CreateOrderDto: {
+            /** @example 123 Main St */
+            shippingAddress: string;
+            /** @example Warsaw */
+            shippingCity: string;
+            /** @example 00-001 */
+            shippingPostal: string;
+            /** @example Poland */
+            shippingCountry: string;
+            /**
+             * Format: email
+             * @example [email protected]
+             */
+            customerEmail: string;
+            /** @example +48 123 456 789 */
+            customerPhone: string;
+            /**
+             * @example MOCK_CARD
+             * @enum {string}
+             */
+            paymentMethod: "MOCK_CARD" | "MOCK_BLIK" | "MOCK_PAYPAL" | "MOCK_TRANSFER";
+        };
+        OrderItemResponseDto: {
+            id: string;
+            productId: string;
+            productName: string;
+            quantity: number;
+            priceAtOrder: number;
+            subtotal: number;
+        };
+        PaymentResponseDto: {
+            id: string;
+            orderId: string;
+            amount: number;
+            /** @enum {string} */
+            status: "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
+            /** @enum {string} */
+            method: "MOCK_CARD" | "MOCK_BLIK" | "MOCK_PAYPAL" | "MOCK_TRANSFER";
+            transactionId: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        OrderResponseDto: {
+            id: string;
+            orderNumber: string;
+            /** @enum {string} */
+            status: "PENDING" | "PAID" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+            totalAmount: number;
+            userId: string;
+            shippingAddress: string;
+            shippingCity: string;
+            shippingPostal: string;
+            shippingCountry: string;
+            customerEmail: string;
+            customerPhone: string;
+            items: components["schemas"]["OrderItemResponseDto"][];
+            payment?: components["schemas"]["PaymentResponseDto"];
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        OrderStatsDto: {
+            totalOrders: number;
+            totalRevenue: number;
+            pendingOrders: number;
+            completedOrders: number;
+            cancelledOrders: number;
+        };
+        PaginatedOrderResponse: {
+            data: components["schemas"]["OrderResponseDto"][];
+            meta: {
+                total: number;
+                page: number;
+                limit: number;
+                totalPages: number;
+            };
+        };
+        UpdateOrderStatusDto: {
+            /** @enum {string} */
+            status: "PENDING" | "PAID" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+        };
+        ProcessPaymentDto: {
+            /** @example cm1order123 */
+            orderId: string;
+            /**
+             * @example MOCK_CARD
+             * @enum {string}
+             */
+            paymentMethod: "MOCK_CARD" | "MOCK_BLIK" | "MOCK_PAYPAL" | "MOCK_TRANSFER";
         };
     };
     responses: never;
@@ -1617,6 +2183,366 @@ export interface operations {
             };
         };
     };
+    ProductsController_findAll: {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                search?: string;
+                categoryId?: string;
+                isActive?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns paginated list of products */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedProductResponse"];
+                };
+            };
+        };
+    };
+    ProductsController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateProductDto"];
+            };
+        };
+        responses: {
+            /** @description Product created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductResponseDto"];
+                };
+            };
+            /** @description Invalid data */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Product with slug or SKU already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_findOne: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns product details */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductResponseDto"];
+                };
+            };
+            /** @description Product not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_remove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Product deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Product not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateProductDto"];
+            };
+        };
+        responses: {
+            /** @description Product updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductResponseDto"];
+                };
+            };
+            /** @description Product not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_findBySlug: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns product details */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductResponseDto"];
+                };
+            };
+            /** @description Product not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_getProductStock: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns stock information for product */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductStockSummaryDto"];
+                };
+            };
+            /** @description Product not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_createStock: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateStockDto"];
+            };
+        };
+        responses: {
+            /** @description Stock created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockResponseDto"];
+                };
+            };
+            /** @description Product or warehouse not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Stock already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_deleteStock: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                productId: string;
+                warehouseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Stock deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Stock not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_updateStock: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                productId: string;
+                warehouseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateStockDto"];
+            };
+        };
+        responses: {
+            /** @description Stock updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockResponseDto"];
+                };
+            };
+            /** @description Stock not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_adjustStock: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                productId: string;
+                warehouseId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdjustStockDto"];
+            };
+        };
+        responses: {
+            /** @description Stock adjusted successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockResponseDto"];
+                };
+            };
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockResponseDto"];
+                };
+            };
+            /** @description Invalid adjustment */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Stock not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     WarehousesController_findAll: {
         parameters: {
             query?: {
@@ -2394,6 +3320,421 @@ export interface operations {
                 content?: never;
             };
             /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    CartController_getCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns user cart with items */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CartResponseDto"];
+                };
+            };
+        };
+    };
+    CartController_clearCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cart cleared successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    CartController_addToCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddToCartDto"];
+            };
+        };
+        responses: {
+            /** @description Item added to cart successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CartResponseDto"];
+                };
+            };
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CartResponseDto"];
+                };
+            };
+            /** @description Invalid data or insufficient stock */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Product not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    CartController_removeFromCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                productId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Item removed from cart successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CartResponseDto"];
+                };
+            };
+            /** @description Cart item not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    CartController_updateCartItem: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                productId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateCartItemDto"];
+            };
+        };
+        responses: {
+            /** @description Cart item updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CartResponseDto"];
+                };
+            };
+            /** @description Insufficient stock */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Cart item not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    OrdersController_findAll: {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                status?: "PENDING" | "PAID" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+                userId?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns paginated list of orders */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedOrderResponse"];
+                };
+            };
+        };
+    };
+    OrdersController_createOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOrderDto"];
+            };
+        };
+        responses: {
+            /** @description Order created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrderResponseDto"];
+                };
+            };
+            /** @description Cart is empty or insufficient stock */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    OrdersController_getStats: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns order statistics */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrderStatsDto"];
+                };
+            };
+        };
+    };
+    OrdersController_getMyOrders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns user orders */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrderResponseDto"][];
+                };
+            };
+        };
+    };
+    OrdersController_findOne: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns order details */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrderResponseDto"];
+                };
+            };
+            /** @description Order not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    OrdersController_findByOrderNumber: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                orderNumber: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns order details */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrderResponseDto"];
+                };
+            };
+            /** @description Order not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    OrdersController_updateStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateOrderStatusDto"];
+            };
+        };
+        responses: {
+            /** @description Order status updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrderResponseDto"];
+                };
+            };
+            /** @description Order not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentsController_processPayment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProcessPaymentDto"];
+            };
+        };
+        responses: {
+            /** @description Payment processed successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentResponseDto"];
+                };
+            };
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentResponseDto"];
+                };
+            };
+            /** @description Payment already completed */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Order or payment not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentsController_getPaymentByOrderId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                orderId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns payment details */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentResponseDto"];
+                };
+            };
+            /** @description Payment not found */
             404: {
                 headers: {
                     [name: string]: unknown;

@@ -12,10 +12,25 @@ const memory = [
 import { Button } from '@/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Minus, Plus } from 'lucide-react'
-import { useId } from 'react'
+import { useId, useState } from 'react'
+import { useCartStore } from '@/lib/stores/cart-store'
 
-export default function ProductOptions() {
+type ProductOptionsProps = {
+  product: {
+    id: number
+    price: number
+  }
+}
+
+export default function ProductOptions({ product }: ProductOptionsProps) {
   const id = useId()
+  const [quantity, setQuantity] = useState(1)
+  const { addToCart, isLoading } = useCartStore()
+
+  const handleAddToCart = async () => {
+    await addToCart(product.id, quantity)
+  }
+
   return (
     <>
       <div className="flex flex-col justify-between h-full w-full ">
@@ -23,7 +38,7 @@ export default function ProductOptions() {
           {' '}
           {/* SIZE RADIO */}
           <div className="">
-            <h1 className="text-xl font-bold p-2">Size :</h1>
+            <h1 className="text-xl font-bold p-2">Rozmiar :</h1>
             <RadioGroup className="flex w-full  gap-2 items-center">
               {sizes.map((item) => (
                 <label
@@ -46,7 +61,7 @@ export default function ProductOptions() {
           </div>
           {/* MEMORY RADIO */}
           <div>
-            <h1 className="text-xl font-bold p-2">Memory :</h1>
+            <h1 className="text-xl font-bold p-2">Pamięć :</h1>
             <RadioGroup className="flex w-full  items-center">
               {memory.map((item) => (
                 <label
@@ -70,19 +85,35 @@ export default function ProductOptions() {
         </div>
         <div className="flex flex-col gap-4">
           <div className=" flex gap-10 items-center mt-5">
-            <h1 className="font-bold text-2xl">$420.69 </h1>
+            <h1 className="font-bold text-2xl">
+              {product.price.toFixed(2)} zł
+            </h1>
             <div className="flex items-center gap-2 ">
-              <Button size="sm" variant="secondary">
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+              >
                 <Minus className="h-4 w-4" />
               </Button>
-              <span className="w-6 text-center"> 1 </span>
-              <Button size="sm" variant="secondary">
+              <span className="w-6 text-center"> {quantity} </span>
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => setQuantity(quantity + 1)}
+              >
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
           </div>
           <div>
-            <Button className="text-md font-bold w-full">Add To Cart</Button>
+            <Button
+              className="text-md font-bold w-full"
+              onClick={handleAddToCart}
+              disabled={isLoading}
+            >
+              Dodaj do koszyka
+            </Button>
           </div>
         </div>
       </div>

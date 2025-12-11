@@ -120,7 +120,7 @@ export function Navbar() {
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link
-                  to="/"
+                  to="/products"
                   className="inline-flex flex-row items-center gap-3 px-4 py-3 text-base text-brand-navy hover:text-orange-500 transition-colors whitespace-nowrap"
                 >
                   <Flame className="h-6 w-6 text-orange-500" />
@@ -133,7 +133,7 @@ export function Navbar() {
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link
-                  to="/"
+                  to="/products"
                   className="inline-flex flex-row items-center gap-3 px-4 py-3 text-base text-brand-navy hover:text-orange-500 transition-colors whitespace-nowrap"
                 >
                   <Sparkles className="h-6 w-6 text-purple-500" />
@@ -146,7 +146,7 @@ export function Navbar() {
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link
-                  to="/"
+                  to="/products"
                   className="inline-flex flex-row items-center gap-3 px-4 py-3 text-base text-brand-navy hover:text-orange-500 transition-colors whitespace-nowrap"
                 >
                   <PercentCircle className="h-6 w-6 text-red-500" />

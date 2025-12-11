@@ -34,7 +34,18 @@ const navigationItems = [
         href: '/admin/categories',
         icon: FolderTree,
       },
-      { title: 'Manage Products', href: '/admin/products', icon: Box },
+      { title: 'Manage Products', href: '/admin/products/manage', icon: Box },
+    ],
+  },
+  {
+    title: 'Orders',
+    icon: Package,
+    items: [
+      {
+        title: 'Manage Orders',
+        href: '/admin/orders/manage',
+        icon: Package,
+      },
     ],
   },
   {
