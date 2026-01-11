@@ -28,6 +28,11 @@ export class QueryProductDto {
   @IsOptional()
   categoryId?: string;
 
+  @ApiPropertyOptional({ example: 'Elektronika' })
+  @IsString()
+  @IsOptional()
+  category?: string;
+
   @ApiPropertyOptional({ example: true })
   @IsOptional()
   @Type(() => Boolean)

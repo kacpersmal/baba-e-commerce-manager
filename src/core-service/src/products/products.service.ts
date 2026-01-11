@@ -42,7 +42,14 @@ export class ProductsService {
   ) {}
 
   async findAll(query: QueryProductDto): Promise<PaginatedProductResponse> {
-    const { page = 1, limit = 20, search, categoryId, isActive } = query;
+    const {
+      page = 1,
+      limit = 20,
+      search,
+      categoryId,
+      category,
+      isActive,
+    } = query;
     const skip = (page - 1) * limit;
 
     const where: any = {};
@@ -57,6 +64,32 @@ export class ProductsService {
 
     if (categoryId) {
       where.categoryId = categoryId;
+    } else if (category) {
+      // Look up category by slug or name
+      const foundCategory = await this.prisma.category.findFirst({
+        where: {
+          OR: [
+            { slug: { equals: category, mode: 'insensitive' } },
+            { name: { equals: category, mode: 'insensitive' } },
+          ],
+        },
+        include: {
+          children: true,
+        },
+      });
+
+      if (foundCategory) {
+        // If it's a parent category, search in both parent and all children
+        if (foundCategory.children && foundCategory.children.length > 0) {
+          const categoryIds = [
+            foundCategory.id,
+            ...foundCategory.children.map((child) => child.id),
+          ];
+          where.categoryId = { in: categoryIds };
+        } else {
+          where.categoryId = foundCategory.id;
+        }
+      }
     }
 
     if (isActive !== undefined) {
