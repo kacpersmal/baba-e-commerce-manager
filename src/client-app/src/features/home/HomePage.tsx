@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { ShoppingCart, Zap, TrendingUp, Users, Package } from 'lucide-react'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import { ProductCard } from '@/components/ui/product-card'
 import { FlashDealCard } from '@/components/ui/flash-deal-card'
 import { TestimonialCard } from '@/components/ui/testimonial-card'
@@ -10,15 +12,23 @@ import { Footer } from '@/components/ui/footer'
 import { CountdownTimer } from '@/components/ui/countdown-timer'
 import { Link } from '@tanstack/react-router'
 import {
-  featuredProducts,
   promoBenefits,
   testimonials,
   processSteps,
   flashDeals,
   faqItems,
 } from './mock-data'
+import { usePublicProducts } from '@/features/product-list/hooks'
 
 export function HomePage() {
+  const { data, isLoading, error } = usePublicProducts({
+    page: 1,
+    limit: 10,
+    isActive: true,
+  })
+
+  console.log(data)
+
   return (
     <div className="min-h-screen">
       <section className="relative overflow-hidden py-16 sm:py-24 lg:py-32">
@@ -150,11 +160,32 @@ export function HomePage() {
             </p>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} {...product} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="space-y-4">
+                  <Skeleton className="aspect-square w-full rounded-xl" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : error ? (
+            <Alert variant="destructive">
+              <AlertTitle>Błąd</AlertTitle>
+              <AlertDescription>
+                Nie udało się załadować produktów. Spróbuj odświeżyć stronę.
+              </AlertDescription>
+            </Alert>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {data?.data.map((product) => (
+                <ProductCard key={product.id} {...product} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
       <section className="border-y bg-muted/30 py-12 sm:py-16">

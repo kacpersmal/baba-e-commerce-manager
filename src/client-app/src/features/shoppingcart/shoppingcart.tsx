@@ -31,16 +31,20 @@ export function ShoppingCartContent() {
     fetchCart()
   }, [fetchCart])
 
-  const handleQuantityChange = (itemId: number, delta: number) => {
-    const item = cart?.items.find((i) => i.id === itemId)
+  const handleQuantityChange = (productId: string, delta: number) => {
+    const item = cart?.items.find((i) => i.productId === productId)
     if (item) {
-      const newQuantity = Math.max(1, item.quantity + delta)
-      updateQuantity(itemId, newQuantity)
+      const newQuantity = item.quantity + delta
+      if (newQuantity < 1) {
+        removeFromCart(productId)
+      } else {
+        updateQuantity(productId, newQuantity)
+      }
     }
   }
 
-  const handleRemove = (itemId: number) => {
-    removeFromCart(itemId)
+  const handleRemove = (productId: string) => {
+    removeFromCart(productId)
   }
 
   const subtotal = getTotalAmount().toFixed(2)
@@ -74,7 +78,6 @@ export function ShoppingCartContent() {
           </SheetDescription>
         </SheetHeader>
 
-        {/* Produkty w koszyku */}
         <ScrollArea className="flex-1 px-4 py-2 max-h-[calc(91vh-14rem)]">
           {isLoading ? (
             <div className="flex items-center justify-center py-10">
@@ -90,25 +93,25 @@ export function ShoppingCartContent() {
                   >
                     <img
                       src={
-                        item.product.imageUrl ||
+                        item.productImageUrl ||
                         'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=100&h=100&fit=crop'
                       }
-                      alt={item.product.name}
+                      alt={item.productName}
                       className="w-16 h-16 object-cover rounded-md"
                     />
 
                     <div className="flex-1">
                       <p className="font-medium text-gray-200">
-                        {item.product.name}
+                        {item.productName}
                       </p>
                       <p className="text-sm text-gray-200">
-                        {item.product.price.toFixed(2)} zł
+                        {item.productPrice.toFixed(2)} zł
                       </p>
                       <div className="flex items-center gap-2 mt-2">
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => handleQuantityChange(item.id, -1)}
+                          onClick={() => handleQuantityChange(item.productId, -1)}
                           disabled={isLoading}
                         >
                           <Minus className="h-4 w-4" />
@@ -117,7 +120,7 @@ export function ShoppingCartContent() {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => handleQuantityChange(item.id, +1)}
+                          onClick={() => handleQuantityChange(item.productId, +1)}
                           disabled={isLoading}
                         >
                           <Plus className="h-4 w-4" />
@@ -129,13 +132,14 @@ export function ShoppingCartContent() {
                       variant="ghost"
                       size="icon"
                       className="text-red-500 hover:text-red-600"
-                      onClick={() => handleRemove(item.id)}
+                      onClick={() => handleRemove(item.productId)}
                       disabled={isLoading}
                     >
                       <Trash2 className="h-5 w-5" />
                     </Button>
                   </div>
                 ))
+
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-gray-400 py-10">
                   <ShoppingCart className="h-10 w-10 mb-3 opacity-70" />
@@ -155,7 +159,6 @@ export function ShoppingCartContent() {
 
         <Separator />
 
-        {/* Stopka */}
         <SheetFooter className="px-4 py-3 space-y-3 bg-brand-navy text-white rounded-t-lg">
           <div className="flex justify-between items-center">
             <span className="text-gray-200">Suma</span>
