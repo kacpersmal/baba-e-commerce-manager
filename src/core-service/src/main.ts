@@ -71,6 +71,7 @@ async function bootstrap() {
     logger.log('Swagger documentation available at http://localhost:8000/docs');
   }
 
+  app.setGlobalPrefix('api');
   const port = process.env.PORT ?? 8000;
   await app.listen(port);
   logger.log(`Application is running on: http://localhost:${port}`);
